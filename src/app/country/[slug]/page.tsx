@@ -1,1217 +1,1217 @@
-import { Metadata } from &apos;next&apos;;
-import Image from &apos;next/image&apos;;
-import Link from &apos;next/link&apos;;
-import { notFound } from &apos;next/navigation&apos;;
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 const countryData = {
   france: {
-    title: &apos;France Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore France\'s most beautiful destinations from Paris to the French Riviera. Discover iconic landmarks, art, cuisine, and culture with our comprehensive France travel guide.&apos;,
-    keywords: &apos;France travel guide, Paris, French Riviera, Loire Valley, Mont Saint-Michel, French food, France attractions, France itinerary, France travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1436491865332-7a61a109cc05&apos;,
-    heroAlt: &apos;French landscape featuring Paris skyline and Eiffel Tower&apos;,
+    title: 'France Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore France\'s most beautiful destinations from Paris to the French Riviera. Discover iconic landmarks, art, cuisine, and culture with our comprehensive France travel guide.',
+    keywords: 'France travel guide, Paris, French Riviera, Loire Valley, Mont Saint-Michel, French food, France attractions, France itinerary, France travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05',
+    heroAlt: 'French landscape featuring Paris skyline and Eiffel Tower',
     destinations: [
       {
-        name: &quot;Paris&quot;,
-        description: &quot;The City of Light, home to iconic landmarks, world-class museums, and elegant boulevards. A perfect blend of history, art, and modern culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1431274172761-fca41d930114&quot;,
-        highlights: [&quot;Eiffel Tower&quot;, &quot;Louvre Museum&quot;, &quot;Notre-Dame Cathedral&quot;],
-        bestTime: &quot;April to June, September to October&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Paris",
+        description: "The City of Light, home to iconic landmarks, world-class museums, and elegant boulevards. A perfect blend of history, art, and modern culture.",
+        image: "https://images.unsplash.com/photo-1431274172761-fca41d930114",
+        highlights: ["Eiffel Tower", "Louvre Museum", "Notre-Dame Cathedral"],
+        bestTime: "April to June, September to October",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;French Riviera&quot;,
-        description: &quot;The glamorous Mediterranean coastline featuring pristine beaches, luxury resorts, and charming coastal towns.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1533614767967-c4c1fb457e7a&quot;,
-        highlights: [&quot;Nice&quot;, &quot;Cannes&quot;, &quot;Saint-Tropez&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "French Riviera",
+        description: "The glamorous Mediterranean coastline featuring pristine beaches, luxury resorts, and charming coastal towns.",
+        image: "https://images.unsplash.com/photo-1533614767967-c4c1fb457e7a",
+        highlights: ["Nice", "Cannes", "Saint-Tropez"],
+        bestTime: "June to September",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Loire Valley&quot;,
-        description: &quot;Known as the &apos;Garden of France&apos;, featuring magnificent châteaux, historic towns, and renowned vineyards.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1591289009723-aef0a1a8a211&quot;,
-        highlights: [&quot;Château de Chambord&quot;, &quot;Château de Chenonceau&quot;, &quot;Wine Tours&quot;],
-        bestTime: &quot;May to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Loire Valley",
+        description: "Known as the 'Garden of France', featuring magnificent châteaux, historic towns, and renowned vineyards.",
+        image: "https://images.unsplash.com/photo-1591289009723-aef0a1a8a211",
+        highlights: ["Château de Chambord", "Château de Chenonceau", "Wine Tours"],
+        bestTime: "May to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Mont Saint-Michel&quot;,
-        description: &quot;Iconic tidal island crowned by a stunning medieval monastery, one of France&apos;s most remarkable landmarks.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1580909090792-1b7ae20ef4cd&quot;,
-        highlights: [&quot;Abbey&quot;, &quot;Medieval Ramparts&quot;, &quot;Tidal Views&quot;],
-        bestTime: &quot;July to August&quot;,
-        duration: &quot;1-2 days&quot;
+        name: "Mont Saint-Michel",
+        description: "Iconic tidal island crowned by a stunning medieval monastery, one of France's most remarkable landmarks.",
+        image: "https://images.unsplash.com/photo-1580909090792-1b7ae20ef4cd",
+        highlights: ["Abbey", "Medieval Ramparts", "Tidal Views"],
+        bestTime: "July to August",
+        duration: "1-2 days"
       },
       {
-        name: &quot;Provence&quot;,
-        description: &quot;Picturesque region known for lavender fields, charming villages, Roman ruins, and excellent wine.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1595844730298-b3c5f464afd1&quot;,
-        highlights: [&quot;Avignon&quot;, &quot;Lavender Fields&quot;, &quot;Aix-en-Provence&quot;],
-        bestTime: &quot;June to August (lavender season)&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Provence",
+        description: "Picturesque region known for lavender fields, charming villages, Roman ruins, and excellent wine.",
+        image: "https://images.unsplash.com/photo-1595844730298-b3c5f464afd1",
+        highlights: ["Avignon", "Lavender Fields", "Aix-en-Provence"],
+        bestTime: "June to August (lavender season)",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover French gastronomy through cooking classes, wine tastings, and food tours across different regions.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover French gastronomy through cooking classes, wine tastings, and food tours across different regions.",
         activities: [
-          &quot;Croissant baking in Paris&quot;,
-          &quot;Wine tasting in Bordeaux&quot;,
-          &quot;Cheese making in Normandy&quot;,
-          &quot;Truffle hunting in Périgord&quot;
+          "Croissant baking in Paris",
+          "Wine tasting in Bordeaux",
+          "Cheese making in Normandy",
+          "Truffle hunting in Périgord"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in France&apos;s rich cultural heritage through art, history, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in France's rich cultural heritage through art, history, and local traditions.",
         activities: [
-          &quot;Art workshops in Montmartre&quot;,
-          &quot;Palace of Versailles tours&quot;,
-          &quot;Perfume making in Grasse&quot;,
-          &quot;French language cafés&quot;
+          "Art workshops in Montmartre",
+          "Palace of Versailles tours",
+          "Perfume making in Grasse",
+          "French language cafés"
         ]
       }
     ]
   },
   italy: {
-    title: &apos;Italy Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Italy\'s most beautiful destinations from Rome to Venice. Discover iconic landmarks, art, cuisine, and culture with our comprehensive Italy travel guide.&apos;,
-    keywords: &apos;Italy travel guide, Rome, Florence, Venice, Tuscany, Italian food, Italy attractions, Italy itinerary, Italy travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1516483638261-f4dbaf036963&apos;,
-    heroAlt: &apos;Italian landscape featuring Rome skyline and Colosseum&apos;,
+    title: 'Italy Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Italy\'s most beautiful destinations from Rome to Venice. Discover iconic landmarks, art, cuisine, and culture with our comprehensive Italy travel guide.',
+    keywords: 'Italy travel guide, Rome, Florence, Venice, Tuscany, Italian food, Italy attractions, Italy itinerary, Italy travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963',
+    heroAlt: 'Italian landscape featuring Rome skyline and Colosseum',
     destinations: [
       {
-        name: &quot;Rome&quot;,
-        description: &quot;The Eternal City, home to ancient ruins, world-class art, and vibrant street life. A perfect blend of history and modern culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1552832230-c0197dd311b5&quot;,
-        highlights: [&quot;Colosseum&quot;, &quot;Vatican Museums&quot;, &quot;Roman Forum&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Rome",
+        description: "The Eternal City, home to ancient ruins, world-class art, and vibrant street life. A perfect blend of history and modern culture.",
+        image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5",
+        highlights: ["Colosseum", "Vatican Museums", "Roman Forum"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Florence&quot;,
-        description: &quot;Birthplace of the Renaissance, featuring magnificent art, architecture, and Tuscan cuisine.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1541370545674-ebf8425b3df8&quot;,
-        highlights: [&quot;Uffizi Gallery&quot;, &quot;Duomo&quot;, &quot;Ponte Vecchio&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Florence",
+        description: "Birthplace of the Renaissance, featuring magnificent art, architecture, and Tuscan cuisine.",
+        image: "https://images.unsplash.com/photo-1541370545674-ebf8425b3df8",
+        highlights: ["Uffizi Gallery", "Duomo", "Ponte Vecchio"],
+        bestTime: "April to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Venice&quot;,
-        description: &quot;The floating city of canals, gondolas, and historic palaces. A unique blend of art, architecture, and romance.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1514890547357-a9ee288728e0&quot;,
-        highlights: [&quot;St. Mark&apos;s Basilica&quot;, &quot;Grand Canal&quot;, &quot;Rialto Bridge&quot;],
-        bestTime: &quot;September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Venice",
+        description: "The floating city of canals, gondolas, and historic palaces. A unique blend of art, architecture, and romance.",
+        image: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0",
+        highlights: ["St. Mark's Basilica", "Grand Canal", "Rialto Bridge"],
+        bestTime: "September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Tuscany&quot;,
-        description: &quot;Rolling hills, medieval towns, and world-class wineries define this iconic Italian region.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1467269204594-9661b134dd2b&quot;,
-        highlights: [&quot;Siena&quot;, &quot;Chianti Region&quot;, &quot;Val d&apos;Orcia&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;4-5 days&quot;
+        name: "Tuscany",
+        description: "Rolling hills, medieval towns, and world-class wineries define this iconic Italian region.",
+        image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b",
+        highlights: ["Siena", "Chianti Region", "Val d'Orcia"],
+        bestTime: "April to October",
+        duration: "4-5 days"
       },
       {
-        name: &quot;Amalfi Coast&quot;,
-        description: &quot;Dramatic coastline featuring colorful towns, stunning beaches, and Mediterranean charm.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1533587851505-d119e13fa0d7&quot;,
-        highlights: [&quot;Positano&quot;, &quot;Ravello&quot;, &quot;Boat Tours&quot;],
-        bestTime: &quot;May to September&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Amalfi Coast",
+        description: "Dramatic coastline featuring colorful towns, stunning beaches, and Mediterranean charm.",
+        image: "https://images.unsplash.com/photo-1533587851505-d119e13fa0d7",
+        highlights: ["Positano", "Ravello", "Boat Tours"],
+        bestTime: "May to September",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Italian gastronomy through cooking classes, wine tastings, and food tours across different regions.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Italian gastronomy through cooking classes, wine tastings, and food tours across different regions.",
         activities: [
-          &quot;Pasta making in Bologna&quot;,
-          &quot;Wine tasting in Tuscany&quot;,
-          &quot;Pizza making in Naples&quot;,
-          &quot;Truffle hunting in Piedmont&quot;
+          "Pasta making in Bologna",
+          "Wine tasting in Tuscany",
+          "Pizza making in Naples",
+          "Truffle hunting in Piedmont"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Italy&apos;s rich cultural heritage through art, history, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Italy's rich cultural heritage through art, history, and local traditions.",
         activities: [
-          &quot;Art workshops in Florence&quot;,
-          &quot;Gladiator school in Rome&quot;,
-          &quot;Mask making in Venice&quot;,
-          &quot;Italian language cafés&quot;
+          "Art workshops in Florence",
+          "Gladiator school in Rome",
+          "Mask making in Venice",
+          "Italian language cafés"
         ]
       }
     ]
   },
   spain: {
-    title: &apos;Spain Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Spain\'s most vibrant destinations from Barcelona to Madrid. Discover iconic landmarks, art, cuisine, and culture with our comprehensive Spain travel guide.&apos;,
-    keywords: &apos;Spain travel guide, Barcelona, Madrid, Seville, Granada, Spanish food, Spain attractions, Spain itinerary, Spain travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1543783207-ec64e4d95325&apos;,
-    heroAlt: &apos;Spanish landscape featuring Plaza de España in Seville&apos;,
+    title: 'Spain Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Spain\'s most vibrant destinations from Barcelona to Madrid. Discover iconic landmarks, art, cuisine, and culture with our comprehensive Spain travel guide.',
+    keywords: 'Spain travel guide, Barcelona, Madrid, Seville, Granada, Spanish food, Spain attractions, Spain itinerary, Spain travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325',
+    heroAlt: 'Spanish landscape featuring Plaza de España in Seville',
     destinations: [
       {
-        name: &quot;Barcelona&quot;,
-        description: &quot;A city of artistic marvels, with stunning architecture, vibrant culture, and beautiful beaches. Home to Gaudi&apos;s masterpieces and Catalan heritage.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1583422409516-2895a77efded&quot;,
-        highlights: [&quot;Sagrada Familia&quot;, &quot;Park Güell&quot;, &quot;Las Ramblas&quot;],
-        bestTime: &quot;April to June, September to October&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Barcelona",
+        description: "A city of artistic marvels, with stunning architecture, vibrant culture, and beautiful beaches. Home to Gaudi's masterpieces and Catalan heritage.",
+        image: "https://images.unsplash.com/photo-1583422409516-2895a77efded",
+        highlights: ["Sagrada Familia", "Park Güell", "Las Ramblas"],
+        bestTime: "April to June, September to October",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Madrid&quot;,
-        description: &quot;Spain&apos;s dynamic capital, offering world-class art museums, elegant boulevards, and beautiful parks, combined with fantastic food scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1539037116277-4db20889f2d4&quot;,
-        highlights: [&quot;Prado Museum&quot;, &quot;Royal Palace&quot;, &quot;Retiro Park&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Madrid",
+        description: "Spain's dynamic capital, offering world-class art museums, elegant boulevards, and beautiful parks, combined with fantastic food scene.",
+        image: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4",
+        highlights: ["Prado Museum", "Royal Palace", "Retiro Park"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Seville&quot;,
-        description: &quot;The heart of Andalusia, famous for its flamenco heritage, stunning architecture, and orange-scented streets.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1559386484-97dfc0e15539&quot;,
-        highlights: [&quot;Plaza de España&quot;, &quot;Real Alcázar&quot;, &quot;Giralda Tower&quot;],
-        bestTime: &quot;March to May&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Seville",
+        description: "The heart of Andalusia, famous for its flamenco heritage, stunning architecture, and orange-scented streets.",
+        image: "https://images.unsplash.com/photo-1559386484-97dfc0e15539",
+        highlights: ["Plaza de España", "Real Alcázar", "Giralda Tower"],
+        bestTime: "March to May",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Granada&quot;,
-        description: &quot;Home to the magnificent Alhambra palace and the historic Albaicín quarter, showcasing Spain&apos;s Moorish heritage.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1591806663029-da5da36df6c8&quot;,
-        highlights: [&quot;Alhambra&quot;, &quot;Albaicín&quot;, &quot;Sierra Nevada&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Granada",
+        description: "Home to the magnificent Alhambra palace and the historic Albaicín quarter, showcasing Spain's Moorish heritage.",
+        image: "https://images.unsplash.com/photo-1591806663029-da5da36df6c8",
+        highlights: ["Alhambra", "Albaicín", "Sierra Nevada"],
+        bestTime: "March to May, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;San Sebastian&quot;,
-        description: &quot;A coastal gem known for its beautiful beaches, Basque culture, and world-renowned culinary scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1591465001609-ded6360ecaab&quot;,
-        highlights: [&quot;La Concha Beach&quot;, &quot;Pintxos Bars&quot;, &quot;Monte Igueldo&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "San Sebastian",
+        description: "A coastal gem known for its beautiful beaches, Basque culture, and world-renowned culinary scene.",
+        image: "https://images.unsplash.com/photo-1591465001609-ded6360ecaab",
+        highlights: ["La Concha Beach", "Pintxos Bars", "Monte Igueldo"],
+        bestTime: "June to September",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Spanish gastronomy through cooking classes, wine tastings, and food tours across different regions.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Spanish gastronomy through cooking classes, wine tastings, and food tours across different regions.",
         activities: [
-          &quot;Paella cooking in Valencia&quot;,
-          &quot;Wine tasting in Rioja&quot;,
-          &quot;Pintxos tour in San Sebastian&quot;,
-          &quot;Tapas crawl in Madrid&quot;
+          "Paella cooking in Valencia",
+          "Wine tasting in Rioja",
+          "Pintxos tour in San Sebastian",
+          "Tapas crawl in Madrid"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Spain&apos;s rich cultural heritage through art, history, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Spain's rich cultural heritage through art, history, and local traditions.",
         activities: [
-          &quot;Flamenco shows in Seville&quot;,
-          &quot;Art museums in Madrid&quot;,
-          &quot;Arabic baths in Granada&quot;,
-          &quot;Spanish language cafés&quot;
+          "Flamenco shows in Seville",
+          "Art museums in Madrid",
+          "Arabic baths in Granada",
+          "Spanish language cafés"
         ]
       }
     ]
   },
   greece: {
-    title: &apos;Greece Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Greece\'s enchanting destinations from Athens to Santorini. Discover ancient ruins, stunning islands, cuisine, and culture with our comprehensive Greece travel guide.&apos;,
-    keywords: &apos;Greece travel guide, Athens, Santorini, Mykonos, Crete, Greek food, Greece attractions, Greece itinerary, Greece travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1533105079780-92b9be482077&apos;,
-    heroAlt: &apos;Stunning view of Santorini with white buildings and blue domes&apos;,
+    title: 'Greece Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Greece\'s enchanting destinations from Athens to Santorini. Discover ancient ruins, stunning islands, cuisine, and culture with our comprehensive Greece travel guide.',
+    keywords: 'Greece travel guide, Athens, Santorini, Mykonos, Crete, Greek food, Greece attractions, Greece itinerary, Greece travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1533105079780-92b9be482077',
+    heroAlt: 'Stunning view of Santorini with white buildings and blue domes',
     destinations: [
       {
-        name: &quot;Athens&quot;,
-        description: &quot;The historic capital, where ancient ruins meet modern life. Home to the iconic Acropolis and vibrant neighborhoods filled with culture and art.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1603565816030-6b389eeb23cb&quot;,
-        highlights: [&quot;Acropolis&quot;, &quot;Plaka&quot;, &quot;Ancient Agora&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Athens",
+        description: "The historic capital, where ancient ruins meet modern life. Home to the iconic Acropolis and vibrant neighborhoods filled with culture and art.",
+        image: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb",
+        highlights: ["Acropolis", "Plaka", "Ancient Agora"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Santorini&quot;,
-        description: &quot;A stunning volcanic island known for its dramatic caldera views, white-washed buildings, and spectacular sunsets.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff&quot;,
-        highlights: [&quot;Oia&quot;, &quot;Caldera Views&quot;, &quot;Red Beach&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Santorini",
+        description: "A stunning volcanic island known for its dramatic caldera views, white-washed buildings, and spectacular sunsets.",
+        image: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff",
+        highlights: ["Oia", "Caldera Views", "Red Beach"],
+        bestTime: "April to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Mykonos&quot;,
-        description: &quot;Cosmopolitan island famous for its beautiful beaches, windmills, and vibrant nightlife scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a&quot;,
-        highlights: [&quot;Little Venice&quot;, &quot;Windmills&quot;, &quot;Paradise Beach&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Mykonos",
+        description: "Cosmopolitan island famous for its beautiful beaches, windmills, and vibrant nightlife scene.",
+        image: "https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a",
+        highlights: ["Little Venice", "Windmills", "Paradise Beach"],
+        bestTime: "June to September",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Crete&quot;,
-        description: &quot;Greece&apos;s largest island, offering rich history, beautiful beaches, mountain villages, and excellent cuisine.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1586861635167-e5223aadc9fe&quot;,
-        highlights: [&quot;Palace of Knossos&quot;, &quot;Samaria Gorge&quot;, &quot;Elafonisi Beach&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;4-5 days&quot;
+        name: "Crete",
+        description: "Greece's largest island, offering rich history, beautiful beaches, mountain villages, and excellent cuisine.",
+        image: "https://images.unsplash.com/photo-1586861635167-e5223aadc9fe",
+        highlights: ["Palace of Knossos", "Samaria Gorge", "Elafonisi Beach"],
+        bestTime: "April to October",
+        duration: "4-5 days"
       },
       {
-        name: &quot;Meteora&quot;,
-        description: &quot;Stunning monastery complex perched atop dramatic rock formations, offering spiritual and natural wonder.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1579422369814-86262fd35c31&quot;,
-        highlights: [&quot;Monasteries&quot;, &quot;Sunset Views&quot;, &quot;Rock Climbing&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Meteora",
+        description: "Stunning monastery complex perched atop dramatic rock formations, offering spiritual and natural wonder.",
+        image: "https://images.unsplash.com/photo-1579422369814-86262fd35c31",
+        highlights: ["Monasteries", "Sunset Views", "Rock Climbing"],
+        bestTime: "March to May, September to November",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Greek gastronomy through cooking classes, wine tastings, and food tours across different regions.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Greek gastronomy through cooking classes, wine tastings, and food tours across different regions.",
         activities: [
-          &quot;Traditional cooking in Athens&quot;,
-          &quot;Wine tasting in Santorini&quot;,
-          &quot;Olive oil tasting in Crete&quot;,
-          &quot;Street food tours in Thessaloniki&quot;
+          "Traditional cooking in Athens",
+          "Wine tasting in Santorini",
+          "Olive oil tasting in Crete",
+          "Street food tours in Thessaloniki"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Greece&apos;s rich cultural heritage through history, art, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Greece's rich cultural heritage through history, art, and local traditions.",
         activities: [
-          &quot;Ancient ruins exploration&quot;,
-          &quot;Greek pottery workshops&quot;,
-          &quot;Traditional dance lessons&quot;,
-          &quot;Island hopping adventures&quot;
+          "Ancient ruins exploration",
+          "Greek pottery workshops",
+          "Traditional dance lessons",
+          "Island hopping adventures"
         ]
       }
     ]
   },
   germany: {
-    title: &apos;Germany Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Germany\'s diverse destinations from Berlin to Bavaria. Discover historic cities, fairytale castles, cuisine, and culture with our comprehensive Germany travel guide.&apos;,
-    keywords: &apos;Germany travel guide, Berlin, Munich, Black Forest, Bavaria, German food, Germany attractions, Germany itinerary, Germany travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1467269204594-9661b134dd2b&apos;,
-    heroAlt: &apos;Stunning view of Neuschwanstein Castle in Bavaria&apos;,
+    title: 'Germany Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Germany\'s diverse destinations from Berlin to Bavaria. Discover historic cities, fairytale castles, cuisine, and culture with our comprehensive Germany travel guide.',
+    keywords: 'Germany travel guide, Berlin, Munich, Black Forest, Bavaria, German food, Germany attractions, Germany itinerary, Germany travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b',
+    heroAlt: 'Stunning view of Neuschwanstein Castle in Bavaria',
     destinations: [
       {
-        name: &quot;Berlin&quot;,
-        description: &quot;Germany&apos;s dynamic capital, where history meets modern culture. A city of art, innovation, and powerful historical landmarks.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1560969184-10fe8719e047&quot;,
-        highlights: [&quot;Brandenburg Gate&quot;, &quot;East Side Gallery&quot;, &quot;Museum Island&quot;],
-        bestTime: &quot;May to September&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Berlin",
+        description: "Germany's dynamic capital, where history meets modern culture. A city of art, innovation, and powerful historical landmarks.",
+        image: "https://images.unsplash.com/photo-1560969184-10fe8719e047",
+        highlights: ["Brandenburg Gate", "East Side Gallery", "Museum Island"],
+        bestTime: "May to September",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Munich&quot;,
-        description: &quot;Bavaria&apos;s capital, known for its traditional festivals, beer halls, and stunning architecture, perfectly blending old and new.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1595867818082-083862f3d630&quot;,
-        highlights: [&quot;Marienplatz&quot;, &quot;Oktoberfest&quot;, &quot;English Garden&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Munich",
+        description: "Bavaria's capital, known for its traditional festivals, beer halls, and stunning architecture, perfectly blending old and new.",
+        image: "https://images.unsplash.com/photo-1595867818082-083862f3d630",
+        highlights: ["Marienplatz", "Oktoberfest", "English Garden"],
+        bestTime: "April to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Black Forest&quot;,
-        description: &quot;Mystical woodland region famous for its scenic beauty, traditional villages, and cuckoo clocks.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1605649487212-47bdab064df7&quot;,
-        highlights: [&quot;Triberg Waterfalls&quot;, &quot;Baden-Baden&quot;, &quot;Hiking Trails&quot;],
-        bestTime: &quot;June to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Black Forest",
+        description: "Mystical woodland region famous for its scenic beauty, traditional villages, and cuckoo clocks.",
+        image: "https://images.unsplash.com/photo-1605649487212-47bdab064df7",
+        highlights: ["Triberg Waterfalls", "Baden-Baden", "Hiking Trails"],
+        bestTime: "June to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hamburg&quot;,
-        description: &quot;Maritime city with stunning architecture, vibrant cultural scene, and Europe&apos;s second-largest port.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1581513700095-7272f3e5f1b6&quot;,
-        highlights: [&quot;Speicherstadt&quot;, &quot;Elbphilharmonie&quot;, &quot;Harbor Tour&quot;],
-        bestTime: &quot;May to September&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Hamburg",
+        description: "Maritime city with stunning architecture, vibrant cultural scene, and Europe's second-largest port.",
+        image: "https://images.unsplash.com/photo-1581513700095-7272f3e5f1b6",
+        highlights: ["Speicherstadt", "Elbphilharmonie", "Harbor Tour"],
+        bestTime: "May to September",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Heidelberg&quot;,
-        description: &quot;Romantic university town with medieval charm, riverside setting, and iconic castle ruins.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1592906209472-a36b1f3782ef&quot;,
-        highlights: [&quot;Heidelberg Castle&quot;, &quot;Old Bridge&quot;, &quot;Philosophers&apos; Way&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Heidelberg",
+        description: "Romantic university town with medieval charm, riverside setting, and iconic castle ruins.",
+        image: "https://images.unsplash.com/photo-1592906209472-a36b1f3782ef",
+        highlights: ["Heidelberg Castle", "Old Bridge", "Philosophers' Way"],
+        bestTime: "April to October",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover German gastronomy through traditional food, beer tastings, and regional specialties.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover German gastronomy through traditional food, beer tastings, and regional specialties.",
         activities: [
-          &quot;Beer brewing workshop in Munich&quot;,
-          &quot;Black Forest cake making&quot;,
-          &quot;Wine tasting in Rhine Valley&quot;,
-          &quot;Street food tours in Berlin&quot;
+          "Beer brewing workshop in Munich",
+          "Black Forest cake making",
+          "Wine tasting in Rhine Valley",
+          "Street food tours in Berlin"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Germany&apos;s rich cultural heritage through history, art, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Germany's rich cultural heritage through history, art, and local traditions.",
         activities: [
-          &quot;Classical music concerts&quot;,
-          &quot;Christmas markets in winter&quot;,
-          &quot;Castle tours in Bavaria&quot;,
-          &quot;Historical walking tours&quot;
+          "Classical music concerts",
+          "Christmas markets in winter",
+          "Castle tours in Bavaria",
+          "Historical walking tours"
         ]
       }
     ]
   },
   japan: {
-    title: &apos;Japan Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Japan\'s fascinating destinations from Tokyo to Kyoto. Discover ancient temples, modern cities, cuisine, and culture with our comprehensive Japan travel guide.&apos;,
-    keywords: &apos;Japan travel guide, Tokyo, Kyoto, Mount Fuji, Japanese food, Japan attractions, Japan itinerary, Japan travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e&apos;,
-    heroAlt: &apos;Beautiful view of Mount Fuji with cherry blossoms in Japan&apos;,
+    title: 'Japan Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Japan\'s fascinating destinations from Tokyo to Kyoto. Discover ancient temples, modern cities, cuisine, and culture with our comprehensive Japan travel guide.',
+    keywords: 'Japan travel guide, Tokyo, Kyoto, Mount Fuji, Japanese food, Japan attractions, Japan itinerary, Japan travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e',
+    heroAlt: 'Beautiful view of Mount Fuji with cherry blossoms in Japan',
     destinations: [
       {
-        name: &quot;Tokyo&quot;,
-        description: &quot;Japan&apos;s dynamic capital, where tradition meets ultra-modernity. Experience cutting-edge technology, ancient temples, and vibrant pop culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1540959733332-eab4deabeeaf&quot;,
-        highlights: [&quot;Shibuya Crossing&quot;, &quot;Senso-ji Temple&quot;, &quot;Tokyo Skytree&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Tokyo",
+        description: "Japan's dynamic capital, where tradition meets ultra-modernity. Experience cutting-edge technology, ancient temples, and vibrant pop culture.",
+        image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
+        highlights: ["Shibuya Crossing", "Senso-ji Temple", "Tokyo Skytree"],
+        bestTime: "March to May, September to November",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Kyoto&quot;,
-        description: &quot;The cultural heart of Japan, featuring over 1,600 temples, traditional gardens, and preserved historic districts.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f&quot;,
-        highlights: [&quot;Fushimi Inari Shrine&quot;, &quot;Kinkaku-ji&quot;, &quot;Arashiyama Bamboo Grove&quot;],
-        bestTime: &quot;March to May, October to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Kyoto",
+        description: "The cultural heart of Japan, featuring over 1,600 temples, traditional gardens, and preserved historic districts.",
+        image: "https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f",
+        highlights: ["Fushimi Inari Shrine", "Kinkaku-ji", "Arashiyama Bamboo Grove"],
+        bestTime: "March to May, October to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Osaka&quot;,
-        description: &quot;Japan&apos;s kitchen and entertainment capital, known for its amazing food scene, friendly locals, and vibrant nightlife.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1590559899731-a382839e5549&quot;,
-        highlights: [&quot;Dotonbori&quot;, &quot;Osaka Castle&quot;, &quot;Kuromon Market&quot;],
-        bestTime: &quot;March to May, October to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Osaka",
+        description: "Japan's kitchen and entertainment capital, known for its amazing food scene, friendly locals, and vibrant nightlife.",
+        image: "https://images.unsplash.com/photo-1590559899731-a382839e5549",
+        highlights: ["Dotonbori", "Osaka Castle", "Kuromon Market"],
+        bestTime: "March to May, October to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hakone&quot;,
-        description: &quot;Scenic hot spring resort town offering stunning views of Mount Fuji and peaceful natural settings.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1492571350019-22de08371fd3&quot;,
-        highlights: [&quot;Mount Fuji Views&quot;, &quot;Onsen Baths&quot;, &quot;Hakone Shrine&quot;],
-        bestTime: &quot;July to August, October to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Hakone",
+        description: "Scenic hot spring resort town offering stunning views of Mount Fuji and peaceful natural settings.",
+        image: "https://images.unsplash.com/photo-1492571350019-22de08371fd3",
+        highlights: ["Mount Fuji Views", "Onsen Baths", "Hakone Shrine"],
+        bestTime: "July to August, October to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hiroshima&quot;,
-        description: &quot;A city of peace and resilience, offering powerful historical sites and beautiful island scenery.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1542051841857-5f90071e7989&quot;,
-        highlights: [&quot;Peace Memorial&quot;, &quot;Miyajima Island&quot;, &quot;Atomic Dome&quot;],
-        bestTime: &quot;March to May, October to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Hiroshima",
+        description: "A city of peace and resilience, offering powerful historical sites and beautiful island scenery.",
+        image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989",
+        highlights: ["Peace Memorial", "Miyajima Island", "Atomic Dome"],
+        bestTime: "March to May, October to November",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Japanese gastronomy through cooking classes, market tours, and regional specialties.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Japanese gastronomy through cooking classes, market tours, and regional specialties.",
         activities: [
-          &quot;Sushi making workshop&quot;,
-          &quot;Ramen cooking class&quot;,
-          &quot;Sake tasting experience&quot;,
-          &quot;Street food tours&quot;
+          "Sushi making workshop",
+          "Ramen cooking class",
+          "Sake tasting experience",
+          "Street food tours"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Japan&apos;s rich cultural heritage through traditional arts and customs.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Japan's rich cultural heritage through traditional arts and customs.",
         activities: [
-          &quot;Tea ceremony participation&quot;,
-          &quot;Kimono wearing experience&quot;,
-          &quot;Zen meditation session&quot;,
-          &quot;Traditional craft workshops&quot;
+          "Tea ceremony participation",
+          "Kimono wearing experience",
+          "Zen meditation session",
+          "Traditional craft workshops"
         ]
       }
     ]
   },
   china: {
-    title: &apos;China Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore China\'s incredible destinations from the Great Wall to ancient cities. Discover iconic landmarks, rich history, cuisine, and culture with our comprehensive China travel guide.&apos;,
-    keywords: &apos;China travel guide, Beijing, Shanghai, Great Wall, Chinese food, China attractions, China itinerary, China travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1508804185872-d7badad00f7d&apos;,
-    heroAlt: &apos;The Great Wall of China stretching across mountains at sunset&apos;,
+    title: 'China Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore China\'s incredible destinations from the Great Wall to ancient cities. Discover iconic landmarks, rich history, cuisine, and culture with our comprehensive China travel guide.',
+    keywords: 'China travel guide, Beijing, Shanghai, Great Wall, Chinese food, China attractions, China itinerary, China travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d',
+    heroAlt: 'The Great Wall of China stretching across mountains at sunset',
     destinations: [
       {
-        name: &quot;Beijing&quot;,
-        description: &quot;China&apos;s historic capital, home to imperial palaces, ancient temples, and the iconic Great Wall. A perfect blend of ancient and modern China.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1584464491033-06628f3a6b7b&quot;,
-        highlights: [&quot;Great Wall&quot;, &quot;Forbidden City&quot;, &quot;Temple of Heaven&quot;],
-        bestTime: &quot;March to May, September to October&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Beijing",
+        description: "China's historic capital, home to imperial palaces, ancient temples, and the iconic Great Wall. A perfect blend of ancient and modern China.",
+        image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b",
+        highlights: ["Great Wall", "Forbidden City", "Temple of Heaven"],
+        bestTime: "March to May, September to October",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Shanghai&quot;,
-        description: &quot;China&apos;s largest city and financial hub, featuring futuristic skylines, historic districts, and vibrant culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1545893835-abaa50cbe628&quot;,
-        highlights: [&quot;The Bund&quot;, &quot;Yu Garden&quot;, &quot;Pudong Skyline&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Shanghai",
+        description: "China's largest city and financial hub, featuring futuristic skylines, historic districts, and vibrant culture.",
+        image: "https://images.unsplash.com/photo-1545893835-abaa50cbe628",
+        highlights: ["The Bund", "Yu Garden", "Pudong Skyline"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Xi&apos;an&quot;,
-        description: &quot;Ancient capital featuring the Terracotta Army and one of the best-preserved ancient city walls in China.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1591499370596-5d3d1f337cc9&quot;,
-        highlights: [&quot;Terracotta Warriors&quot;, &quot;City Wall&quot;, &quot;Muslim Quarter&quot;],
-        bestTime: &quot;March to May, September to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Xi'an",
+        description: "Ancient capital featuring the Terracotta Army and one of the best-preserved ancient city walls in China.",
+        image: "https://images.unsplash.com/photo-1591499370596-5d3d1f337cc9",
+        highlights: ["Terracotta Warriors", "City Wall", "Muslim Quarter"],
+        bestTime: "March to May, September to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Guilin&quot;,
-        description: &quot;Stunning landscape of limestone karst mountains and peaceful rivers, offering some of China&apos;s most beautiful scenery.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1537687264563-47a1116b6970&quot;,
-        highlights: [&quot;Li River Cruise&quot;, &quot;Rice Terraces&quot;, &quot;Reed Flute Cave&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Guilin",
+        description: "Stunning landscape of limestone karst mountains and peaceful rivers, offering some of China's most beautiful scenery.",
+        image: "https://images.unsplash.com/photo-1537687264563-47a1116b6970",
+        highlights: ["Li River Cruise", "Rice Terraces", "Reed Flute Cave"],
+        bestTime: "April to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Chengdu&quot;,
-        description: &quot;Capital of Sichuan Province, famous for spicy cuisine, giant pandas, and traditional culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1545506475-5a8e68a23825&quot;,
-        highlights: [&quot;Giant Panda Base&quot;, &quot;Leshan Giant Buddha&quot;, &quot;Jinli Street&quot;],
-        bestTime: &quot;March to June, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Chengdu",
+        description: "Capital of Sichuan Province, famous for spicy cuisine, giant pandas, and traditional culture.",
+        image: "https://images.unsplash.com/photo-1545506475-5a8e68a23825",
+        highlights: ["Giant Panda Base", "Leshan Giant Buddha", "Jinli Street"],
+        bestTime: "March to June, September to November",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Chinese gastronomy through cooking classes, market tours, and regional specialties.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Chinese gastronomy through cooking classes, market tours, and regional specialties.",
         activities: [
-          &quot;Dumpling making workshop&quot;,
-          &quot;Street food tours&quot;,
-          &quot;Tea ceremonies&quot;,
-          &quot;Sichuan cooking class&quot;
+          "Dumpling making workshop",
+          "Street food tours",
+          "Tea ceremonies",
+          "Sichuan cooking class"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in China&apos;s rich cultural heritage through traditional arts and customs.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in China's rich cultural heritage through traditional arts and customs.",
         activities: [
-          &quot;Calligraphy lessons&quot;,
-          &quot;Tai Chi in parks&quot;,
-          &quot;Traditional medicine workshops&quot;,
-          &quot;Temple visits and ceremonies&quot;
+          "Calligraphy lessons",
+          "Tai Chi in parks",
+          "Traditional medicine workshops",
+          "Temple visits and ceremonies"
         ]
       }
     ]
   },
   thailand: {
-    title: &apos;Thailand Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Thailand\'s tropical paradise from Bangkok to pristine islands. Discover temples, beaches, cuisine, and culture with our comprehensive Thailand travel guide.&apos;,
-    keywords: &apos;Thailand travel guide, Bangkok, Phuket, Chiang Mai, Thai food, Thailand attractions, Thailand itinerary, Thailand travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1552465011-b4e21bf6e79a&apos;,
-    heroAlt: &apos;Beautiful Thai temple with sunset background&apos;,
+    title: 'Thailand Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Thailand\'s tropical paradise from Bangkok to pristine islands. Discover temples, beaches, cuisine, and culture with our comprehensive Thailand travel guide.',
+    keywords: 'Thailand travel guide, Bangkok, Phuket, Chiang Mai, Thai food, Thailand attractions, Thailand itinerary, Thailand travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a',
+    heroAlt: 'Beautiful Thai temple with sunset background',
     destinations: [
       {
-        name: &quot;Bangkok&quot;,
-        description: &quot;Thailand&apos;s vibrant capital, where traditional temples meet modern skyscrapers, with amazing street food and nightlife.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1563492065599-3520f775eeed&quot;,
-        highlights: [&quot;Grand Palace&quot;, &quot;Wat Phra Kaew&quot;, &quot;Chatuchak Market&quot;],
-        bestTime: &quot;November to March&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Bangkok",
+        description: "Thailand's vibrant capital, where traditional temples meet modern skyscrapers, with amazing street food and nightlife.",
+        image: "https://images.unsplash.com/photo-1563492065599-3520f775eeed",
+        highlights: ["Grand Palace", "Wat Phra Kaew", "Chatuchak Market"],
+        bestTime: "November to March",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Chiang Mai&quot;,
-        description: &quot;Cultural capital of the north, known for temples, traditional crafts, and elephant sanctuaries.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1598971639058-fab3c3109a34&quot;,
-        highlights: [&quot;Doi Suthep&quot;, &quot;Night Bazaar&quot;, &quot;Elephant Nature Park&quot;],
-        bestTime: &quot;October to February&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Chiang Mai",
+        description: "Cultural capital of the north, known for temples, traditional crafts, and elephant sanctuaries.",
+        image: "https://images.unsplash.com/photo-1598971639058-fab3c3109a34",
+        highlights: ["Doi Suthep", "Night Bazaar", "Elephant Nature Park"],
+        bestTime: "October to February",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Phuket&quot;,
-        description: &quot;Thailand&apos;s largest island, offering beautiful beaches, luxury resorts, and vibrant nightlife.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1589394815804-964ed0be2eb5&quot;,
-        highlights: [&quot;Phi Phi Islands&quot;, &quot;Old Town&quot;, &quot;Big Buddha&quot;],
-        bestTime: &quot;November to April&quot;,
-        duration: &quot;4-5 days&quot;
+        name: "Phuket",
+        description: "Thailand's largest island, offering beautiful beaches, luxury resorts, and vibrant nightlife.",
+        image: "https://images.unsplash.com/photo-1589394815804-964ed0be2eb5",
+        highlights: ["Phi Phi Islands", "Old Town", "Big Buddha"],
+        bestTime: "November to April",
+        duration: "4-5 days"
       },
       {
-        name: &quot;Ayutthaya&quot;,
-        description: &quot;Ancient capital with impressive temple ruins and historical parks, a UNESCO World Heritage site.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1528181304800-259b08848526&quot;,
-        highlights: [&quot;Temple Ruins&quot;, &quot;Buddha Head in Tree&quot;, &quot;River Cruise&quot;],
-        bestTime: &quot;November to February&quot;,
-        duration: &quot;1-2 days&quot;
+        name: "Ayutthaya",
+        description: "Ancient capital with impressive temple ruins and historical parks, a UNESCO World Heritage site.",
+        image: "https://images.unsplash.com/photo-1528181304800-259b08848526",
+        highlights: ["Temple Ruins", "Buddha Head in Tree", "River Cruise"],
+        bestTime: "November to February",
+        duration: "1-2 days"
       },
       {
-        name: &quot;Krabi&quot;,
-        description: &quot;Stunning coastal province with limestone cliffs, clear waters, and beautiful beaches.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b&quot;,
-        highlights: [&quot;Railay Beach&quot;, &quot;Tiger Cave Temple&quot;, &quot;Island Hopping&quot;],
-        bestTime: &quot;November to March&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Krabi",
+        description: "Stunning coastal province with limestone cliffs, clear waters, and beautiful beaches.",
+        image: "https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b",
+        highlights: ["Railay Beach", "Tiger Cave Temple", "Island Hopping"],
+        bestTime: "November to March",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Thai gastronomy through cooking classes, market tours, and street food exploration.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Thai gastronomy through cooking classes, market tours, and street food exploration.",
         activities: [
-          &quot;Thai cooking classes&quot;,
-          &quot;Street food tours&quot;,
-          &quot;Fruit carving workshop&quot;,
-          &quot;Market exploration&quot;
+          "Thai cooking classes",
+          "Street food tours",
+          "Fruit carving workshop",
+          "Market exploration"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Thailand&apos;s rich cultural heritage through traditional arts and customs.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Thailand's rich cultural heritage through traditional arts and customs.",
         activities: [
-          &quot;Temple meditation&quot;,
-          &quot;Thai massage course&quot;,
-          &quot;Traditional dance shows&quot;,
-          &quot;Muay Thai training&quot;
+          "Temple meditation",
+          "Thai massage course",
+          "Traditional dance shows",
+          "Muay Thai training"
         ]
       }
     ]
   },
   vietnam: {
-    title: &apos;Vietnam Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Vietnam\'s diverse landscapes from Hanoi to Ho Chi Minh City. Discover ancient towns, beautiful bays, cuisine, and culture with our comprehensive Vietnam travel guide.&apos;,
-    keywords: &apos;Vietnam travel guide, Hanoi, Ha Long Bay, Hoi An, Vietnamese food, Vietnam attractions, Vietnam itinerary, Vietnam travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1528127269322-539801943592&apos;,
-    heroAlt: &apos;Beautiful landscape of Ha Long Bay with traditional boats&apos;,
+    title: 'Vietnam Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Vietnam\'s diverse landscapes from Hanoi to Ho Chi Minh City. Discover ancient towns, beautiful bays, cuisine, and culture with our comprehensive Vietnam travel guide.',
+    keywords: 'Vietnam travel guide, Hanoi, Ha Long Bay, Hoi An, Vietnamese food, Vietnam attractions, Vietnam itinerary, Vietnam travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1528127269322-539801943592',
+    heroAlt: 'Beautiful landscape of Ha Long Bay with traditional boats',
     destinations: [
       {
-        name: &quot;Hanoi&quot;,
-        description: &quot;Vietnam&apos;s charming capital, featuring colonial architecture, ancient temples, and vibrant street life.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1509030450996-dd1a26367f37&quot;,
-        highlights: [&quot;Old Quarter&quot;, &quot;Hoan Kiem Lake&quot;, &quot;Temple of Literature&quot;],
-        bestTime: &quot;October to December&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Hanoi",
+        description: "Vietnam's charming capital, featuring colonial architecture, ancient temples, and vibrant street life.",
+        image: "https://images.unsplash.com/photo-1509030450996-dd1a26367f37",
+        highlights: ["Old Quarter", "Hoan Kiem Lake", "Temple of Literature"],
+        bestTime: "October to December",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Ha Long Bay&quot;,
-        description: &quot;UNESCO World Heritage site with thousands of limestone islands rising from emerald waters.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1573270695497-da9c3360dc18&quot;,
-        highlights: [&quot;Island Cruises&quot;, &quot;Cave Exploration&quot;, &quot;Kayaking&quot;],
-        bestTime: &quot;October to December&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Ha Long Bay",
+        description: "UNESCO World Heritage site with thousands of limestone islands rising from emerald waters.",
+        image: "https://images.unsplash.com/photo-1573270695497-da9c3360dc18",
+        highlights: ["Island Cruises", "Cave Exploration", "Kayaking"],
+        bestTime: "October to December",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hoi An&quot;,
-        description: &quot;Ancient trading port known for its well-preserved architecture, tailors, and lantern-lit streets.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1540870373726-97f5a8194c5a&quot;,
-        highlights: [&quot;Ancient Town&quot;, &quot;Japanese Bridge&quot;, &quot;Lantern Market&quot;],
-        bestTime: &quot;February to July&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Hoi An",
+        description: "Ancient trading port known for its well-preserved architecture, tailors, and lantern-lit streets.",
+        image: "https://images.unsplash.com/photo-1540870373726-97f5a8194c5a",
+        highlights: ["Ancient Town", "Japanese Bridge", "Lantern Market"],
+        bestTime: "February to July",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Ho Chi Minh City&quot;,
-        description: &quot;Dynamic southern hub with French colonial landmarks, war history, and modern development.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1583417319070-4a69db38a482&quot;,
-        highlights: [&quot;Cu Chi Tunnels&quot;, &quot;War Remnants Museum&quot;, &quot;Ben Thanh Market&quot;],
-        bestTime: &quot;December to April&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Ho Chi Minh City",
+        description: "Dynamic southern hub with French colonial landmarks, war history, and modern development.",
+        image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482",
+        highlights: ["Cu Chi Tunnels", "War Remnants Museum", "Ben Thanh Market"],
+        bestTime: "December to April",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Sapa&quot;,
-        description: &quot;Mountain town famous for rice terraces, ethnic minorities, and trekking opportunities.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1528891677728-8ec148196e62&quot;,
-        highlights: [&quot;Rice Terraces&quot;, &quot;Fansipan Mountain&quot;, &quot;Local Markets&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Sapa",
+        description: "Mountain town famous for rice terraces, ethnic minorities, and trekking opportunities.",
+        image: "https://images.unsplash.com/photo-1528891677728-8ec148196e62",
+        highlights: ["Rice Terraces", "Fansipan Mountain", "Local Markets"],
+        bestTime: "March to May, September to November",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Vietnamese gastronomy through cooking classes, market tours, and street food exploration.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Vietnamese gastronomy through cooking classes, market tours, and street food exploration.",
         activities: [
-          &quot;Pho cooking class&quot;,
-          &quot;Street food tours&quot;,
-          &quot;Coffee culture experience&quot;,
-          &quot;Market visits&quot;
+          "Pho cooking class",
+          "Street food tours",
+          "Coffee culture experience",
+          "Market visits"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Vietnam&apos;s rich cultural heritage through traditional arts and customs.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Vietnam's rich cultural heritage through traditional arts and customs.",
         activities: [
-          &quot;Water puppet shows&quot;,
-          &quot;Traditional craft villages&quot;,
-          &quot;Countryside bike tours&quot;,
-          &quot;Local homestays&quot;
+          "Water puppet shows",
+          "Traditional craft villages",
+          "Countryside bike tours",
+          "Local homestays"
         ]
       }
     ]
   },
   korea: {
-    title: &apos;South Korea Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore South Korea\'s dynamic cities and serene temples. Discover K-culture, ancient traditions, cuisine, and modern innovations with our comprehensive Korea travel guide.&apos;,
-    keywords: &apos;Korea travel guide, Seoul, Busan, Jeju Island, Korean food, Korea attractions, Korea itinerary, Korea travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1538669715315-155098f0fb1d&apos;,
-    heroAlt: &apos;Beautiful view of Seoul skyline with Namsan Tower&apos;,
+    title: 'South Korea Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore South Korea\'s dynamic cities and serene temples. Discover K-culture, ancient traditions, cuisine, and modern innovations with our comprehensive Korea travel guide.',
+    keywords: 'Korea travel guide, Seoul, Busan, Jeju Island, Korean food, Korea attractions, Korea itinerary, Korea travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1538669715315-155098f0fb1d',
+    heroAlt: 'Beautiful view of Seoul skyline with Namsan Tower',
     destinations: [
       {
-        name: &quot;Seoul&quot;,
-        description: &quot;South Korea&apos;s dynamic capital, where ancient palaces meet K-pop culture and technological innovation.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1538669715315-155098f0fb1d&quot;,
-        highlights: [&quot;Gyeongbokgung Palace&quot;, &quot;Namsan Tower&quot;, &quot;Hongdae&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Seoul",
+        description: "South Korea's dynamic capital, where ancient palaces meet K-pop culture and technological innovation.",
+        image: "https://images.unsplash.com/photo-1538669715315-155098f0fb1d",
+        highlights: ["Gyeongbokgung Palace", "Namsan Tower", "Hongdae"],
+        bestTime: "March to May, September to November",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Busan&quot;,
-        description: &quot;Vibrant port city known for beaches, seafood, temples, and colorful cultural villages.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1578632618324-1e5e85df4d8c&quot;,
-        highlights: [&quot;Haeundae Beach&quot;, &quot;Gamcheon Culture Village&quot;, &quot;Haedong Yonggungsa Temple&quot;],
-        bestTime: &quot;April to June, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Busan",
+        description: "Vibrant port city known for beaches, seafood, temples, and colorful cultural villages.",
+        image: "https://images.unsplash.com/photo-1578632618324-1e5e85df4d8c",
+        highlights: ["Haeundae Beach", "Gamcheon Culture Village", "Haedong Yonggungsa Temple"],
+        bestTime: "April to June, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Jeju Island&quot;,
-        description: &quot;Volcanic island paradise with beautiful beaches, waterfalls, and unique local culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1548115184-bc6544d06a58&quot;,
-        highlights: [&quot;Hallasan Mountain&quot;, &quot;Seongsan Ilchulbong&quot;, &quot;Manjanggul Cave&quot;],
-        bestTime: &quot;April to June, September to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Jeju Island",
+        description: "Volcanic island paradise with beautiful beaches, waterfalls, and unique local culture.",
+        image: "https://images.unsplash.com/photo-1548115184-bc6544d06a58",
+        highlights: ["Hallasan Mountain", "Seongsan Ilchulbong", "Manjanggul Cave"],
+        bestTime: "April to June, September to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Gyeongju&quot;,
-        description: &quot;Ancient capital of the Silla Kingdom, filled with historic sites and cultural treasures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1625995386160-e224de438509&quot;,
-        highlights: [&quot;Bulguksa Temple&quot;, &quot;Seokguram Grotto&quot;, &quot;Tumuli Park&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Gyeongju",
+        description: "Ancient capital of the Silla Kingdom, filled with historic sites and cultural treasures.",
+        image: "https://images.unsplash.com/photo-1625995386160-e224de438509",
+        highlights: ["Bulguksa Temple", "Seokguram Grotto", "Tumuli Park"],
+        bestTime: "March to May, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Jeonju&quot;,
-        description: &quot;Traditional Korean culture hub, famous for hanok village and bibimbap cuisine.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1625995386160-e224de438509&quot;,
-        highlights: [&quot;Hanok Village&quot;, &quot;Korean Food Culture&quot;, &quot;Traditional Crafts&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;1-2 days&quot;
+        name: "Jeonju",
+        description: "Traditional Korean culture hub, famous for hanok village and bibimbap cuisine.",
+        image: "https://images.unsplash.com/photo-1625995386160-e224de438509",
+        highlights: ["Hanok Village", "Korean Food Culture", "Traditional Crafts"],
+        bestTime: "March to May, September to November",
+        duration: "1-2 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Korean gastronomy through cooking classes, market tours, and street food exploration.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Korean gastronomy through cooking classes, market tours, and street food exploration.",
         activities: [
-          &quot;Kimchi making class&quot;,
-          &quot;Street food tours&quot;,
-          &quot;Traditional tea ceremony&quot;,
-          &quot;Korean BBQ experience&quot;
+          "Kimchi making class",
+          "Street food tours",
+          "Traditional tea ceremony",
+          "Korean BBQ experience"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Korea&apos;s rich cultural heritage through traditional arts and modern K-culture.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Korea's rich cultural heritage through traditional arts and modern K-culture.",
         activities: [
-          &quot;Hanbok wearing&quot;,
-          &quot;K-pop dance class&quot;,
-          &quot;Temple stay program&quot;,
-          &quot;Traditional craft workshops&quot;
+          "Hanbok wearing",
+          "K-pop dance class",
+          "Temple stay program",
+          "Traditional craft workshops"
         ]
       }
     ]
   },
   usa: {
-    title: &apos;United States Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore America\'s most iconic destinations from New York to California. Discover national parks, vibrant cities, diverse cuisine, and culture with our comprehensive USA travel guide.&apos;,
-    keywords: &apos;USA travel guide, New York, California, National Parks, American food, USA attractions, USA itinerary, USA travel tips, American cities, United States tourism&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1501594907352-04cda38ebc29&apos;,
-    heroAlt: &apos;Stunning view of New York City skyline at sunset&apos;,
+    title: 'United States Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore America\'s most iconic destinations from New York to California. Discover national parks, vibrant cities, diverse cuisine, and culture with our comprehensive USA travel guide.',
+    keywords: 'USA travel guide, New York, California, National Parks, American food, USA attractions, USA itinerary, USA travel tips, American cities, United States tourism',
+    heroImage: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29',
+    heroAlt: 'Stunning view of New York City skyline at sunset',
     destinations: [
       {
-        name: &quot;New York City&quot;,
-        description: &quot;The iconic metropolis offering world-class culture, dining, shopping, and entertainment. A city that truly never sleeps.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9&quot;,
-        highlights: [&quot;Times Square&quot;, &quot;Central Park&quot;, &quot;Empire State Building&quot;],
-        bestTime: &quot;April to June, September to November&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "New York City",
+        description: "The iconic metropolis offering world-class culture, dining, shopping, and entertainment. A city that truly never sleeps.",
+        image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+        highlights: ["Times Square", "Central Park", "Empire State Building"],
+        bestTime: "April to June, September to November",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;San Francisco&quot;,
-        description: &quot;A beautiful coastal city known for its iconic bridge, historic cable cars, diverse neighborhoods, and tech culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1501594907352-04cda38ebc29&quot;,
-        highlights: [&quot;Golden Gate Bridge&quot;, &quot;Alcatraz&quot;, &quot;Fisherman&apos;s Wharf&quot;],
-        bestTime: &quot;September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "San Francisco",
+        description: "A beautiful coastal city known for its iconic bridge, historic cable cars, diverse neighborhoods, and tech culture.",
+        image: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29",
+        highlights: ["Golden Gate Bridge", "Alcatraz", "Fisherman's Wharf"],
+        bestTime: "September to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Grand Canyon&quot;,
-        description: &quot;One of the world&apos;s most spectacular natural wonders, offering breathtaking views and outdoor adventures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1474044159687-1ee9f3a51722&quot;,
-        highlights: [&quot;South Rim&quot;, &quot;Hiking Trails&quot;, &quot;Sunset Views&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Grand Canyon",
+        description: "One of the world's most spectacular natural wonders, offering breathtaking views and outdoor adventures.",
+        image: "https://images.unsplash.com/photo-1474044159687-1ee9f3a51722",
+        highlights: ["South Rim", "Hiking Trails", "Sunset Views"],
+        bestTime: "March to May, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hawaii&quot;,
-        description: &quot;Paradise islands offering stunning beaches, volcanic landscapes, rich culture, and perfect tropical weather.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1542259009477-d625272157b7&quot;,
-        highlights: [&quot;Waikiki Beach&quot;, &quot;Volcanoes National Park&quot;, &quot;Road to Hana&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;7-10 days&quot;
+        name: "Hawaii",
+        description: "Paradise islands offering stunning beaches, volcanic landscapes, rich culture, and perfect tropical weather.",
+        image: "https://images.unsplash.com/photo-1542259009477-d625272157b7",
+        highlights: ["Waikiki Beach", "Volcanoes National Park", "Road to Hana"],
+        bestTime: "April to October",
+        duration: "7-10 days"
       },
       {
-        name: &quot;Las Vegas&quot;,
-        description: &quot;The entertainment capital of the world, featuring world-class shows, casinos, dining, and desert adventures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1581351721010-8cf859cb14a4&quot;,
-        highlights: [&quot;The Strip&quot;, &quot;Fremont Street&quot;, &quot;Shows&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Las Vegas",
+        description: "The entertainment capital of the world, featuring world-class shows, casinos, dining, and desert adventures.",
+        image: "https://images.unsplash.com/photo-1581351721010-8cf859cb14a4",
+        highlights: ["The Strip", "Fremont Street", "Shows"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover American gastronomy through regional specialties, food tours, and iconic dining experiences.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover American gastronomy through regional specialties, food tours, and iconic dining experiences.",
         activities: [
-          &quot;New York pizza tours&quot;,
-          &quot;Southern BBQ trails&quot;,
-          &quot;California wine tasting&quot;,
-          &quot;Food truck festivals&quot;
+          "New York pizza tours",
+          "Southern BBQ trails",
+          "California wine tasting",
+          "Food truck festivals"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in America&apos;s diverse cultural heritage through arts, history, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in America's diverse cultural heritage through arts, history, and local traditions.",
         activities: [
-          &quot;Broadway shows in NYC&quot;,
-          &quot;Jazz clubs in New Orleans&quot;,
-          &quot;Hollywood studio tours&quot;,
-          &quot;Native American heritage sites&quot;
+          "Broadway shows in NYC",
+          "Jazz clubs in New Orleans",
+          "Hollywood studio tours",
+          "Native American heritage sites"
         ]
       }
     ]
   },
   brazil: {
-    title: &apos;Brazil Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Brazil\'s vibrant destinations from Rio to the Amazon. Discover beaches, rainforests, cuisine, and culture with our comprehensive Brazil travel guide.&apos;,
-    keywords: &apos;Brazil travel guide, Rio de Janeiro, Amazon, Brazilian food, Brazil attractions, Brazil itinerary, Brazil travel tips, Brazilian cities, Carnival, beaches&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1483729558449-99ef09a8c325&apos;,
-    heroAlt: &apos;Stunning view of Rio de Janeiro with Christ the Redeemer statue&apos;,
+    title: 'Brazil Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Brazil\'s vibrant destinations from Rio to the Amazon. Discover beaches, rainforests, cuisine, and culture with our comprehensive Brazil travel guide.',
+    keywords: 'Brazil travel guide, Rio de Janeiro, Amazon, Brazilian food, Brazil attractions, Brazil itinerary, Brazil travel tips, Brazilian cities, Carnival, beaches',
+    heroImage: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325',
+    heroAlt: 'Stunning view of Rio de Janeiro with Christ the Redeemer statue',
     destinations: [
       {
-        name: &quot;Rio de Janeiro&quot;,
-        description: &quot;The Marvelous City, featuring iconic beaches, vibrant culture, and stunning landscapes. Home to world-famous Carnival celebrations.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1483729558449-99ef09a8c325&quot;,
-        highlights: [&quot;Christ the Redeemer&quot;, &quot;Copacabana Beach&quot;, &quot;Sugarloaf Mountain&quot;],
-        bestTime: &quot;December to March (Summer/Carnival)&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Rio de Janeiro",
+        description: "The Marvelous City, featuring iconic beaches, vibrant culture, and stunning landscapes. Home to world-famous Carnival celebrations.",
+        image: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325",
+        highlights: ["Christ the Redeemer", "Copacabana Beach", "Sugarloaf Mountain"],
+        bestTime: "December to March (Summer/Carnival)",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Amazon Rainforest&quot;,
-        description: &quot;The world&apos;s largest rainforest offering unique wildlife encounters, indigenous cultures, and unforgettable river cruises.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1516514213560-5d0977d3c8e0&quot;,
-        highlights: [&quot;Manaus Opera House&quot;, &quot;River Tours&quot;, &quot;Wildlife Watching&quot;],
-        bestTime: &quot;July to September (Dry Season)&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Amazon Rainforest",
+        description: "The world's largest rainforest offering unique wildlife encounters, indigenous cultures, and unforgettable river cruises.",
+        image: "https://images.unsplash.com/photo-1516514213560-5d0977d3c8e0",
+        highlights: ["Manaus Opera House", "River Tours", "Wildlife Watching"],
+        bestTime: "July to September (Dry Season)",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Salvador&quot;,
-        description: &quot;Brazil&apos;s capital of happiness, known for its colorful colonial architecture, Afro-Brazilian culture, and vibrant music scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1564658504685-63774e1d159e&quot;,
-        highlights: [&quot;Pelourinho Historic Center&quot;, &quot;African Heritage&quot;, &quot;Local Festivals&quot;],
-        bestTime: &quot;March to June, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Salvador",
+        description: "Brazil's capital of happiness, known for its colorful colonial architecture, Afro-Brazilian culture, and vibrant music scene.",
+        image: "https://images.unsplash.com/photo-1564658504685-63774e1d159e",
+        highlights: ["Pelourinho Historic Center", "African Heritage", "Local Festivals"],
+        bestTime: "March to June, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Iguazu Falls&quot;,
-        description: &quot;One of the world&apos;s most spectacular waterfalls, straddling the border with Argentina, offering breathtaking views and adventures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1552975084-6e027cd345c2&quot;,
-        highlights: [&quot;Devil&apos;s Throat&quot;, &quot;Boat Tours&quot;, &quot;Helicopter Rides&quot;],
-        bestTime: &quot;March to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Iguazu Falls",
+        description: "One of the world's most spectacular waterfalls, straddling the border with Argentina, offering breathtaking views and adventures.",
+        image: "https://images.unsplash.com/photo-1552975084-6e027cd345c2",
+        highlights: ["Devil's Throat", "Boat Tours", "Helicopter Rides"],
+        bestTime: "March to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Fernando de Noronha&quot;,
-        description: &quot;Paradise archipelago featuring pristine beaches, crystal-clear waters, and incredible marine life.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1592906209472-a36b1f3782ef&quot;,
-        highlights: [&quot;Baía do Sancho&quot;, &quot;Dolphin Watching&quot;, &quot;Snorkeling&quot;],
-        bestTime: &quot;August to January&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Fernando de Noronha",
+        description: "Paradise archipelago featuring pristine beaches, crystal-clear waters, and incredible marine life.",
+        image: "https://images.unsplash.com/photo-1592906209472-a36b1f3782ef",
+        highlights: ["Baía do Sancho", "Dolphin Watching", "Snorkeling"],
+        bestTime: "August to January",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Brazilian gastronomy through regional specialties, cooking classes, and food tours.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Brazilian gastronomy through regional specialties, cooking classes, and food tours.",
         activities: [
-          &quot;Feijoada cooking class&quot;,
-          &quot;Churrasco experience&quot;,
-          &quot;Açaí tasting&quot;,
-          &quot;Local market tours&quot;
+          "Feijoada cooking class",
+          "Churrasco experience",
+          "Açaí tasting",
+          "Local market tours"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Brazil&apos;s vibrant cultural heritage through music, dance, and traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Brazil's vibrant cultural heritage through music, dance, and traditions.",
         activities: [
-          &quot;Samba dance lessons&quot;,
-          &quot;Carnival costume making&quot;,
-          &quot;Capoeira workshops&quot;,
-          &quot;Favela community tours&quot;
+          "Samba dance lessons",
+          "Carnival costume making",
+          "Capoeira workshops",
+          "Favela community tours"
         ]
       }
     ]
   },
   canada: {
-    title: &apos;Canada Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Canada\'s breathtaking destinations from Vancouver to Quebec. Discover national parks, vibrant cities, cuisine, and culture with our comprehensive Canada travel guide.&apos;,
-    keywords: &apos;Canada travel guide, Vancouver, Toronto, Montreal, Canadian food, Canada attractions, Canada itinerary, Canada travel tips, Canadian cities, Canadian tourism&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1503614472-8c93d56e92ce&apos;,
-    heroAlt: &apos;Stunning view of Moraine Lake in Banff National Park, Canadian Rockies&apos;,
+    title: 'Canada Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Canada\'s breathtaking destinations from Vancouver to Quebec. Discover national parks, vibrant cities, cuisine, and culture with our comprehensive Canada travel guide.',
+    keywords: 'Canada travel guide, Vancouver, Toronto, Montreal, Canadian food, Canada attractions, Canada itinerary, Canada travel tips, Canadian cities, Canadian tourism',
+    heroImage: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce',
+    heroAlt: 'Stunning view of Moraine Lake in Banff National Park, Canadian Rockies',
     destinations: [
       {
-        name: &quot;Vancouver&quot;,
-        description: &quot;A stunning coastal city surrounded by mountains, offering perfect blend of urban life and outdoor adventures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1560813962-ff3d8fcf59ba&quot;,
-        highlights: [&quot;Stanley Park&quot;, &quot;Granville Island&quot;, &quot;Grouse Mountain&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Vancouver",
+        description: "A stunning coastal city surrounded by mountains, offering perfect blend of urban life and outdoor adventures.",
+        image: "https://images.unsplash.com/photo-1560813962-ff3d8fcf59ba",
+        highlights: ["Stanley Park", "Granville Island", "Grouse Mountain"],
+        bestTime: "June to September",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Toronto&quot;,
-        description: &quot;Canada&apos;s largest city, a multicultural metropolis featuring iconic landmarks, diverse neighborhoods, and vibrant culture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1517090504586-fde19ea6066f&quot;,
-        highlights: [&quot;CN Tower&quot;, &quot;Royal Ontario Museum&quot;, &quot;Distillery District&quot;],
-        bestTime: &quot;May to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Toronto",
+        description: "Canada's largest city, a multicultural metropolis featuring iconic landmarks, diverse neighborhoods, and vibrant culture.",
+        image: "https://images.unsplash.com/photo-1517090504586-fde19ea6066f",
+        highlights: ["CN Tower", "Royal Ontario Museum", "Distillery District"],
+        bestTime: "May to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Banff National Park&quot;,
-        description: &quot;A paradise for nature lovers with stunning mountain landscapes, glacial lakes, and abundant wildlife.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1561134643-668f9b71bb53&quot;,
-        highlights: [&quot;Lake Louise&quot;, &quot;Moraine Lake&quot;, &quot;Banff Gondola&quot;],
-        bestTime: &quot;June to August, December to March&quot;,
-        duration: &quot;4-5 days&quot;
+        name: "Banff National Park",
+        description: "A paradise for nature lovers with stunning mountain landscapes, glacial lakes, and abundant wildlife.",
+        image: "https://images.unsplash.com/photo-1561134643-668f9b71bb53",
+        highlights: ["Lake Louise", "Moraine Lake", "Banff Gondola"],
+        bestTime: "June to August, December to March",
+        duration: "4-5 days"
       },
       {
-        name: &quot;Montreal&quot;,
-        description: &quot;A charming blend of European flair and modern North American culture, known for its historic architecture and food scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1519178614-68673b201f36&quot;,
-        highlights: [&quot;Old Montreal&quot;, &quot;Mount Royal&quot;, &quot;Notre-Dame Basilica&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Montreal",
+        description: "A charming blend of European flair and modern North American culture, known for its historic architecture and food scene.",
+        image: "https://images.unsplash.com/photo-1519178614-68673b201f36",
+        highlights: ["Old Montreal", "Mount Royal", "Notre-Dame Basilica"],
+        bestTime: "June to September",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Quebec City&quot;,
-        description: &quot;North America&apos;s oldest walled city, offering French culture, historic charm, and European atmosphere.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1558489580-fab3c3109a34&quot;,
-        highlights: [&quot;Old Quebec&quot;, &quot;Château Frontenac&quot;, &quot;Plains of Abraham&quot;],
-        bestTime: &quot;July to September, December to February&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Quebec City",
+        description: "North America's oldest walled city, offering French culture, historic charm, and European atmosphere.",
+        image: "https://images.unsplash.com/photo-1558489580-fab3c3109a34",
+        highlights: ["Old Quebec", "Château Frontenac", "Plains of Abraham"],
+        bestTime: "July to September, December to February",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Canadian gastronomy through regional specialties, food tours, and local delicacies.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Canadian gastronomy through regional specialties, food tours, and local delicacies.",
         activities: [
-          &quot;Poutine tasting in Quebec&quot;,
-          &quot;Maple syrup experience&quot;,
-          &quot;West Coast seafood tours&quot;,
-          &quot;Multicultural food markets&quot;
+          "Poutine tasting in Quebec",
+          "Maple syrup experience",
+          "West Coast seafood tours",
+          "Multicultural food markets"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Canada&apos;s rich cultural heritage through arts, history, and local traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Canada's rich cultural heritage through arts, history, and local traditions.",
         activities: [
-          &quot;Indigenous cultural tours&quot;,
-          &quot;Winter festivals&quot;,
-          &quot;Historic site visits&quot;,
-          &quot;Hockey game experience&quot;
+          "Indigenous cultural tours",
+          "Winter festivals",
+          "Historic site visits",
+          "Hockey game experience"
         ]
       }
     ]
   },
   mexico: {
-    title: &apos;Mexico Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Mexico\'s vibrant destinations from ancient ruins to pristine beaches. Discover rich culture, cuisine, and traditions with our comprehensive Mexico travel guide.&apos;,
-    keywords: &apos;Mexico travel guide, Mexico City, Cancun, Tulum, Mexican food, Mexico attractions, Mexico itinerary, Mexico travel tips, Mexican cities, Mexican tourism&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1512813195386-6cf811ad3542&apos;,
-    heroAlt: &apos;Stunning view of Chichen Itza pyramid at sunset, Mexico&apos;,
+    title: 'Mexico Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Mexico\'s vibrant destinations from ancient ruins to pristine beaches. Discover rich culture, cuisine, and traditions with our comprehensive Mexico travel guide.',
+    keywords: 'Mexico travel guide, Mexico City, Cancun, Tulum, Mexican food, Mexico attractions, Mexico itinerary, Mexico travel tips, Mexican cities, Mexican tourism',
+    heroImage: 'https://images.unsplash.com/photo-1512813195386-6cf811ad3542',
+    heroAlt: 'Stunning view of Chichen Itza pyramid at sunset, Mexico',
     destinations: [
       {
-        name: &quot;Mexico City&quot;,
-        description: &quot;The bustling capital, blending colonial architecture with modern culture, world-class museums, and incredible street food.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1518659526054-190340b32735&quot;,
-        highlights: [&quot;Zócalo&quot;, &quot;Frida Kahlo Museum&quot;, &quot;Teotihuacan&quot;],
-        bestTime: &quot;March to May&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Mexico City",
+        description: "The bustling capital, blending colonial architecture with modern culture, world-class museums, and incredible street food.",
+        image: "https://images.unsplash.com/photo-1518659526054-190340b32735",
+        highlights: ["Zócalo", "Frida Kahlo Museum", "Teotihuacan"],
+        bestTime: "March to May",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Cancun & Riviera Maya&quot;,
-        description: &quot;Paradise beaches, crystal-clear waters, and luxury resorts along the Caribbean coast.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1552074284-5e88ef1aef18&quot;,
-        highlights: [&quot;Beaches&quot;, &quot;Cenotes&quot;, &quot;Mayan Ruins&quot;],
-        bestTime: &quot;December to April&quot;,
-        duration: &quot;5-7 days&quot;
+        name: "Cancun & Riviera Maya",
+        description: "Paradise beaches, crystal-clear waters, and luxury resorts along the Caribbean coast.",
+        image: "https://images.unsplash.com/photo-1552074284-5e88ef1aef18",
+        highlights: ["Beaches", "Cenotes", "Mayan Ruins"],
+        bestTime: "December to April",
+        duration: "5-7 days"
       },
       {
-        name: &quot;Oaxaca&quot;,
-        description: &quot;Cultural heart of Mexico, famous for its cuisine, indigenous cultures, and colonial architecture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1585975985662-449adf2e7f8f&quot;,
-        highlights: [&quot;Monte Albán&quot;, &quot;Food Markets&quot;, &quot;Mezcal Tours&quot;],
-        bestTime: &quot;October to March&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Oaxaca",
+        description: "Cultural heart of Mexico, famous for its cuisine, indigenous cultures, and colonial architecture.",
+        image: "https://images.unsplash.com/photo-1585975985662-449adf2e7f8f",
+        highlights: ["Monte Albán", "Food Markets", "Mezcal Tours"],
+        bestTime: "October to March",
+        duration: "3-4 days"
       },
       {
-        name: &quot;San Miguel de Allende&quot;,
-        description: &quot;Charming colonial city known for its arts scene, colorful architecture, and cultural festivals.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396&quot;,
-        highlights: [&quot;Parroquia&quot;, &quot;Art Galleries&quot;, &quot;Colonial Streets&quot;],
-        bestTime: &quot;November to April&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "San Miguel de Allende",
+        description: "Charming colonial city known for its arts scene, colorful architecture, and cultural festivals.",
+        image: "https://images.unsplash.com/photo-1585464231875-d9ef1f5ad396",
+        highlights: ["Parroquia", "Art Galleries", "Colonial Streets"],
+        bestTime: "November to April",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Tulum&quot;,
-        description: &quot;Bohemian beach town featuring Mayan ruins, eco-resorts, and pristine beaches.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1504730655501-24c39ac53f0e&quot;,
-        highlights: [&quot;Mayan Ruins&quot;, &quot;Beaches&quot;, &quot;Cenotes&quot;],
-        bestTime: &quot;November to March&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Tulum",
+        description: "Bohemian beach town featuring Mayan ruins, eco-resorts, and pristine beaches.",
+        image: "https://images.unsplash.com/photo-1504730655501-24c39ac53f0e",
+        highlights: ["Mayan Ruins", "Beaches", "Cenotes"],
+        bestTime: "November to March",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Mexican gastronomy through regional specialties, cooking classes, and street food tours.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Mexican gastronomy through regional specialties, cooking classes, and street food tours.",
         activities: [
-          &quot;Street food tours&quot;,
-          &quot;Cooking classes&quot;,
-          &quot;Mezcal tasting&quot;,
-          &quot;Market exploration&quot;
+          "Street food tours",
+          "Cooking classes",
+          "Mezcal tasting",
+          "Market exploration"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Mexico&apos;s rich cultural heritage through arts, history, and traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Mexico's rich cultural heritage through arts, history, and traditions.",
         activities: [
-          &quot;Day of the Dead celebrations&quot;,
-          &quot;Artisan workshops&quot;,
-          &quot;Archaeological sites&quot;,
-          &quot;Traditional dance shows&quot;
+          "Day of the Dead celebrations",
+          "Artisan workshops",
+          "Archaeological sites",
+          "Traditional dance shows"
         ]
       }
     ]
   },
   argentina: {
-    title: &apos;Argentina Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Argentina\'s diverse landscapes from Patagonia to Buenos Aires. Discover tango, wine, nature, and culture with our comprehensive Argentina travel guide.&apos;,
-    keywords: &apos;Argentina travel guide, Buenos Aires, Patagonia, Mendoza, Argentine food, Argentina attractions, Argentina itinerary, Argentina travel tips&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1589909202802-8f4aadce1849&apos;,
-    heroAlt: &apos;Stunning view of Mount Fitz Roy in Patagonia, Argentina&apos;,
+    title: 'Argentina Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Argentina\'s diverse landscapes from Patagonia to Buenos Aires. Discover tango, wine, nature, and culture with our comprehensive Argentina travel guide.',
+    keywords: 'Argentina travel guide, Buenos Aires, Patagonia, Mendoza, Argentine food, Argentina attractions, Argentina itinerary, Argentina travel tips',
+    heroImage: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849',
+    heroAlt: 'Stunning view of Mount Fitz Roy in Patagonia, Argentina',
     destinations: [
       {
-        name: &quot;Buenos Aires&quot;,
-        description: &quot;The passionate capital city, known for tango, stunning architecture, and vibrant cultural scene.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1612294037637-ec328d0e075e&quot;,
-        highlights: [&quot;La Boca&quot;, &quot;Recoleta&quot;, &quot;San Telmo Market&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Buenos Aires",
+        description: "The passionate capital city, known for tango, stunning architecture, and vibrant cultural scene.",
+        image: "https://images.unsplash.com/photo-1612294037637-ec328d0e075e",
+        highlights: ["La Boca", "Recoleta", "San Telmo Market"],
+        bestTime: "March to May, September to November",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Patagonia&quot;,
-        description: &quot;Dramatic landscapes featuring glaciers, mountains, and pristine wilderness.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1460176449511-ff3dc12eecef&quot;,
-        highlights: [&quot;Perito Moreno Glacier&quot;, &quot;Mount Fitz Roy&quot;, &quot;Torres del Paine&quot;],
-        bestTime: &quot;December to March&quot;,
-        duration: &quot;5-7 days&quot;
+        name: "Patagonia",
+        description: "Dramatic landscapes featuring glaciers, mountains, and pristine wilderness.",
+        image: "https://images.unsplash.com/photo-1460176449511-ff3dc12eecef",
+        highlights: ["Perito Moreno Glacier", "Mount Fitz Roy", "Torres del Paine"],
+        bestTime: "December to March",
+        duration: "5-7 days"
       },
       {
-        name: &quot;Mendoza&quot;,
-        description: &quot;World-renowned wine region with stunning Andean backdrop and excellent cuisine.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1515516969-d4008cc6241a&quot;,
-        highlights: [&quot;Wine Tours&quot;, &quot;Aconcagua&quot;, &quot;Olive Farms&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Mendoza",
+        description: "World-renowned wine region with stunning Andean backdrop and excellent cuisine.",
+        image: "https://images.unsplash.com/photo-1515516969-d4008cc6241a",
+        highlights: ["Wine Tours", "Aconcagua", "Olive Farms"],
+        bestTime: "March to May, September to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Iguazu Falls&quot;,
-        description: &quot;One of the world&apos;s most spectacular waterfalls, surrounded by tropical rainforest.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1564587433899-f89341cff472&quot;,
-        highlights: [&quot;Devil&apos;s Throat&quot;, &quot;Boat Tours&quot;, &quot;Rainforest Walks&quot;],
-        bestTime: &quot;March to April, August to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Iguazu Falls",
+        description: "One of the world's most spectacular waterfalls, surrounded by tropical rainforest.",
+        image: "https://images.unsplash.com/photo-1564587433899-f89341cff472",
+        highlights: ["Devil's Throat", "Boat Tours", "Rainforest Walks"],
+        bestTime: "March to April, August to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Bariloche&quot;,
-        description: &quot;Alpine-style resort town offering lakes, mountains, and outdoor adventures.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1583254151664-5a637d0504dc&quot;,
-        highlights: [&quot;Nahuel Huapi Lake&quot;, &quot;Cerro Catedral&quot;, &quot;Chocolate Shops&quot;],
-        bestTime: &quot;December to March (Summer), July to September (Winter)&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Bariloche",
+        description: "Alpine-style resort town offering lakes, mountains, and outdoor adventures.",
+        image: "https://images.unsplash.com/photo-1583254151664-5a637d0504dc",
+        highlights: ["Nahuel Huapi Lake", "Cerro Catedral", "Chocolate Shops"],
+        bestTime: "December to March (Summer), July to September (Winter)",
+        duration: "3-4 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Argentine gastronomy through wine tours, asados, and regional specialties.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Argentine gastronomy through wine tours, asados, and regional specialties.",
         activities: [
-          &quot;Wine tasting in Mendoza&quot;,
-          &quot;Asado experience&quot;,
-          &quot;Mate ceremony&quot;,
-          &quot;Empanada making class&quot;
+          "Wine tasting in Mendoza",
+          "Asado experience",
+          "Mate ceremony",
+          "Empanada making class"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Argentina&apos;s rich cultural heritage through tango, gaucho culture, and arts.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Argentina's rich cultural heritage through tango, gaucho culture, and arts.",
         activities: [
-          &quot;Tango shows and lessons&quot;,
-          &quot;Gaucho day trips&quot;,
-          &quot;Football matches&quot;,
-          &quot;Art gallery tours&quot;
+          "Tango shows and lessons",
+          "Gaucho day trips",
+          "Football matches",
+          "Art gallery tours"
         ]
       }
     ]
   },
   turkey: {
-    title: &apos;Turkey Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Turkey\'s fascinating destinations from Istanbul to Cappadocia. Discover ancient history, rich culture, cuisine, and traditions with our comprehensive Turkey travel guide.&apos;,
-    keywords: &apos;Turkey travel guide, Istanbul, Cappadocia, Turkish food, Turkey attractions, Turkey itinerary, Turkey travel tips, Turkish cities, Turkish tourism&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1589561454226-796a8aa89b05&apos;,
-    heroAlt: &apos;Stunning view of Istanbul skyline with Hagia Sophia and Blue Mosque&apos;,
+    title: 'Turkey Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Turkey\'s fascinating destinations from Istanbul to Cappadocia. Discover ancient history, rich culture, cuisine, and traditions with our comprehensive Turkey travel guide.',
+    keywords: 'Turkey travel guide, Istanbul, Cappadocia, Turkish food, Turkey attractions, Turkey itinerary, Turkey travel tips, Turkish cities, Turkish tourism',
+    heroImage: 'https://images.unsplash.com/photo-1589561454226-796a8aa89b05',
+    heroAlt: 'Stunning view of Istanbul skyline with Hagia Sophia and Blue Mosque',
     destinations: [
       {
-        name: &quot;Istanbul&quot;,
-        description: &quot;A magical city straddling two continents, where East meets West, featuring stunning mosques, bustling bazaars, and rich history.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b&quot;,
-        highlights: [&quot;Hagia Sophia&quot;, &quot;Blue Mosque&quot;, &quot;Grand Bazaar&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;4-5 days minimum&quot;
+        name: "Istanbul",
+        description: "A magical city straddling two continents, where East meets West, featuring stunning mosques, bustling bazaars, and rich history.",
+        image: "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b",
+        highlights: ["Hagia Sophia", "Blue Mosque", "Grand Bazaar"],
+        bestTime: "March to May, September to November",
+        duration: "4-5 days minimum"
       },
       {
-        name: &quot;Cappadocia&quot;,
-        description: &quot;Otherworldly landscape of fairy chimneys, cave churches, and underground cities, famous for hot air balloon rides.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1570643965467-92e5146c27f9&quot;,
-        highlights: [&quot;Hot Air Balloons&quot;, &quot;Underground Cities&quot;, &quot;Cave Hotels&quot;],
-        bestTime: &quot;April to June, September to November&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Cappadocia",
+        description: "Otherworldly landscape of fairy chimneys, cave churches, and underground cities, famous for hot air balloon rides.",
+        image: "https://images.unsplash.com/photo-1570643965467-92e5146c27f9",
+        highlights: ["Hot Air Balloons", "Underground Cities", "Cave Hotels"],
+        bestTime: "April to June, September to November",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Antalya&quot;,
-        description: &quot;Beautiful Mediterranean coastal city offering ancient ruins, stunning beaches, and luxury resorts.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1542051841857-5f90071e7989&quot;,
-        highlights: [&quot;Old Town&quot;, &quot;Düden Waterfalls&quot;, &quot;Ancient Ruins&quot;],
-        bestTime: &quot;April to October&quot;,
-        duration: &quot;3-4 days&quot;
+        name: "Antalya",
+        description: "Beautiful Mediterranean coastal city offering ancient ruins, stunning beaches, and luxury resorts.",
+        image: "https://images.unsplash.com/photo-1542051841857-5f90071e7989",
+        highlights: ["Old Town", "Düden Waterfalls", "Ancient Ruins"],
+        bestTime: "April to October",
+        duration: "3-4 days"
       },
       {
-        name: &quot;Pamukkale&quot;,
-        description: &quot;Natural wonder featuring white travertine terraces and ancient Roman ruins of Hierapolis.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1590114399591-8e2b4c56e116&quot;,
-        highlights: [&quot;Travertine Terraces&quot;, &quot;Hierapolis&quot;, &quot;Cleopatra&apos;s Pool&quot;],
-        bestTime: &quot;March to June, September to November&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Pamukkale",
+        description: "Natural wonder featuring white travertine terraces and ancient Roman ruins of Hierapolis.",
+        image: "https://images.unsplash.com/photo-1590114399591-8e2b4c56e116",
+        highlights: ["Travertine Terraces", "Hierapolis", "Cleopatra's Pool"],
+        bestTime: "March to June, September to November",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Ephesus&quot;,
-        description: &quot;One of the best-preserved ancient cities in the Mediterranean, showcasing remarkable Roman architecture.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1564593523884-6eadee7ee605&quot;,
-        highlights: [&quot;Library of Celsus&quot;, &quot;Temple of Hadrian&quot;, &quot;Ancient Theater&quot;],
-        bestTime: &quot;March to May, September to November&quot;,
-        duration: &quot;1-2 days&quot;
+        name: "Ephesus",
+        description: "One of the best-preserved ancient cities in the Mediterranean, showcasing remarkable Roman architecture.",
+        image: "https://images.unsplash.com/photo-1564593523884-6eadee7ee605",
+        highlights: ["Library of Celsus", "Temple of Hadrian", "Ancient Theater"],
+        bestTime: "March to May, September to November",
+        duration: "1-2 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Turkish gastronomy through regional specialties, cooking classes, and food tours.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Turkish gastronomy through regional specialties, cooking classes, and food tours.",
         activities: [
-          &quot;Turkish coffee experience&quot;,
-          &quot;Street food tours&quot;,
-          &quot;Cooking workshops&quot;,
-          &quot;Spice bazaar exploration&quot;
+          "Turkish coffee experience",
+          "Street food tours",
+          "Cooking workshops",
+          "Spice bazaar exploration"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Turkey&apos;s rich cultural heritage through traditional arts and customs.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Turkey's rich cultural heritage through traditional arts and customs.",
         activities: [
-          &quot;Turkish bath (hamam)&quot;,
-          &quot;Whirling dervishes show&quot;,
-          &quot;Carpet weaving demos&quot;,
-          &quot;Traditional pottery making&quot;
+          "Turkish bath (hamam)",
+          "Whirling dervishes show",
+          "Carpet weaving demos",
+          "Traditional pottery making"
         ]
       }
     ]
   },
   croatia: {
-    title: &apos;Croatia Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints&apos;,
-    description: &apos;Explore Croatia\'s stunning destinations from Dubrovnik to Split. Discover ancient cities, beautiful islands, cuisine, and culture with our comprehensive Croatia travel guide.&apos;,
-    keywords: &apos;Croatia travel guide, Dubrovnik, Split, Croatian food, Croatia attractions, Croatia itinerary, Croatia travel tips, Croatian cities, Croatian tourism&apos;,
-    heroImage: &apos;https://images.unsplash.com/photo-1555990538-17392d5e576a&apos;,
-    heroAlt: &apos;Beautiful view of Dubrovnik old town and Adriatic Sea&apos;,
+    title: 'Croatia Travel Guide: Best Places to Visit & Essential Tips | Global Food Prints',
+    description: 'Explore Croatia\'s stunning destinations from Dubrovnik to Split. Discover ancient cities, beautiful islands, cuisine, and culture with our comprehensive Croatia travel guide.',
+    keywords: 'Croatia travel guide, Dubrovnik, Split, Croatian food, Croatia attractions, Croatia itinerary, Croatia travel tips, Croatian cities, Croatian tourism',
+    heroImage: 'https://images.unsplash.com/photo-1555990538-17392d5e576a',
+    heroAlt: 'Beautiful view of Dubrovnik old town and Adriatic Sea',
     destinations: [
       {
-        name: &quot;Dubrovnik&quot;,
-        description: &quot;The &apos;Pearl of the Adriatic&apos;, featuring stunning medieval walls, limestone streets, and crystal-clear waters.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1542295474-5e78124e5d59&quot;,
-        highlights: [&quot;City Walls&quot;, &quot;Old Town&quot;, &quot;Cable Car&quot;],
-        bestTime: &quot;May to June, September to October&quot;,
-        duration: &quot;3-4 days minimum&quot;
+        name: "Dubrovnik",
+        description: "The 'Pearl of the Adriatic', featuring stunning medieval walls, limestone streets, and crystal-clear waters.",
+        image: "https://images.unsplash.com/photo-1542295474-5e78124e5d59",
+        highlights: ["City Walls", "Old Town", "Cable Car"],
+        bestTime: "May to June, September to October",
+        duration: "3-4 days minimum"
       },
       {
-        name: &quot;Split&quot;,
-        description: &quot;Ancient Roman city centered around Diocletian&apos;s Palace, offering vibrant culture and coastal charm.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1555990538-17392d5e576a&quot;,
-        highlights: [&quot;Diocletian&apos;s Palace&quot;, &quot;Riva Promenade&quot;, &quot;Marjan Hill&quot;],
-        bestTime: &quot;May to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Split",
+        description: "Ancient Roman city centered around Diocletian's Palace, offering vibrant culture and coastal charm.",
+        image: "https://images.unsplash.com/photo-1555990538-17392d5e576a",
+        highlights: ["Diocletian's Palace", "Riva Promenade", "Marjan Hill"],
+        bestTime: "May to October",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Hvar&quot;,
-        description: &quot;Glamorous island known for lavender fields, historic towns, and vibrant nightlife.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1542882247-b86e5a727f8c&quot;,
-        highlights: [&quot;Hvar Town&quot;, &quot;Lavender Fields&quot;, &quot;Pakleni Islands&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Hvar",
+        description: "Glamorous island known for lavender fields, historic towns, and vibrant nightlife.",
+        image: "https://images.unsplash.com/photo-1542882247-b86e5a727f8c",
+        highlights: ["Hvar Town", "Lavender Fields", "Pakleni Islands"],
+        bestTime: "June to September",
+        duration: "2-3 days"
       },
       {
-        name: &quot;Plitvice Lakes&quot;,
-        description: &quot;Stunning national park featuring cascading lakes, waterfalls, and wooden walkways.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1501785888041-af3ef285b470&quot;,
-        highlights: [&quot;16 Lakes&quot;, &quot;Waterfalls&quot;, &quot;Hiking Trails&quot;],
-        bestTime: &quot;June to September&quot;,
-        duration: &quot;1-2 days&quot;
+        name: "Plitvice Lakes",
+        description: "Stunning national park featuring cascading lakes, waterfalls, and wooden walkways.",
+        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+        highlights: ["16 Lakes", "Waterfalls", "Hiking Trails"],
+        bestTime: "June to September",
+        duration: "1-2 days"
       },
       {
-        name: &quot;Rovinj&quot;,
-        description: &quot;Charming coastal town in Istria, known for its colorful houses and artistic atmosphere.&quot;,
-        image: &quot;https://images.unsplash.com/photo-1593420035426-5c4e53a11d46&quot;,
-        highlights: [&quot;Old Town&quot;, &quot;St. Euphemia Church&quot;, &quot;Artists&apos; Street&quot;],
-        bestTime: &quot;May to October&quot;,
-        duration: &quot;2-3 days&quot;
+        name: "Rovinj",
+        description: "Charming coastal town in Istria, known for its colorful houses and artistic atmosphere.",
+        image: "https://images.unsplash.com/photo-1593420035426-5c4e53a11d46",
+        highlights: ["Old Town", "St. Euphemia Church", "Artists' Street"],
+        bestTime: "May to October",
+        duration: "2-3 days"
       }
     ],
     experiences: [
       {
-        name: &quot;Culinary Adventures&quot;,
-        description: &quot;Discover Croatian gastronomy through regional specialties, wine tours, and food experiences.&quot;,
+        name: "Culinary Adventures",
+        description: "Discover Croatian gastronomy through regional specialties, wine tours, and food experiences.",
         activities: [
-          &quot;Truffle hunting in Istria&quot;,
-          &quot;Wine tasting tours&quot;,
-          &quot;Seafood experiences&quot;,
-          &quot;Olive oil tasting&quot;
+          "Truffle hunting in Istria",
+          "Wine tasting tours",
+          "Seafood experiences",
+          "Olive oil tasting"
         ]
       },
       {
-        name: &quot;Cultural Experiences&quot;,
-        description: &quot;Immerse yourself in Croatia&apos;s rich cultural heritage through history, arts, and traditions.&quot;,
+        name: "Cultural Experiences",
+        description: "Immerse yourself in Croatia's rich cultural heritage through history, arts, and traditions.",
         activities: [
-          &quot;Game of Thrones tours&quot;,
-          &quot;Traditional klapa music&quot;,
-          &quot;Folk festivals&quot;,
-          &quot;Island hopping&quot;
+          "Game of Thrones tours",
+          "Traditional klapa music",
+          "Folk festivals",
+          "Island hopping"
         ]
       }
     ]
@@ -1219,13 +1219,13 @@ const countryData = {
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const slug = await params.then(p => p.slug);
+  const slug = params.slug;
   const country = countryData[slug as keyof typeof countryData];
   
   if (!country) {
     return {
-      title: &apos;Country Not Found&apos;,
-      description: &apos;The requested country page could not be found.&apos;
+      title: 'Country Not Found',
+      description: 'The requested country page could not be found.'
     };
   }
 
@@ -1242,7 +1242,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function CountryGuide({ params }: PageProps) {
-  const slug = await params.then(p => p.slug);
+  const slug = params.slug;
   const country = countryData[slug as keyof typeof countryData];
 
   if (!country) {
@@ -1250,35 +1250,35 @@ export default async function CountryGuide({ params }: PageProps) {
   }
 
   return (
-    <div className=&quot;min-h-screen bg-gray-900&quot;>
+    <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
-      <section className=&quot;relative h-[600px]&quot;>
+      <section className="relative h-[600px]">
         <Image
           src={country.heroImage}
           alt={country.heroAlt}
           fill
-          className=&quot;object-cover&quot;
+          className="object-cover"
           priority
         />
-        <div className=&quot;absolute inset-0 bg-black opacity-50&quot;></div>
-        <div className=&quot;relative container mx-auto px-4 h-full flex items-center&quot;>
-          <div className=&quot;max-w-3xl text-white&quot;>
-            <h1 className=&quot;text-6xl font-bold mb-4 text-white drop-shadow-lg&quot;>
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div className="relative container mx-auto px-4 h-full flex items-center">
+          <div className="max-w-3xl text-white">
+            <h1 className="text-6xl font-bold mb-4 text-white drop-shadow-lg">
               {slug.charAt(0).toUpperCase() + slug.slice(1)} Travel Guide
             </h1>
-            <p className=&quot;text-xl mb-6 text-white drop-shadow-md&quot;>
+            <p className="text-xl mb-6 text-white drop-shadow-md">
               Discover the magic of {slug.charAt(0).toUpperCase() + slug.slice(1)}: from iconic landmarks to picturesque countryside, and world-renowned cuisine.
             </p>
-            <div className=&quot;flex gap-4&quot;>
+            <div className="flex gap-4">
               <Link 
-                href=&quot;#destinations&quot;
-                className=&quot;bg-white text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors&quot;
+                href="#destinations"
+                className="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
               >
                 Top Destinations
               </Link>
               <Link 
-                href=&quot;#experiences&quot;
-                className=&quot;border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors&quot;
+                href="#experiences"
+                className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors"
               >
                 Experiences
               </Link>
@@ -1288,83 +1288,83 @@ export default async function CountryGuide({ params }: PageProps) {
       </section>
 
       {/* Quick Facts */}
-      <section className=&quot;py-12 bg-gray-800&quot;>
-        <div className=&quot;container mx-auto px-4&quot;>
-          <div className=&quot;grid grid-cols-1 md:grid-cols-4 gap-8&quot;>
-            <div className=&quot;text-center&quot;>
-              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
-                <span className=&quot;text-2xl&quot;>🌍</span>
+      <section className="py-12 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🌍</span>
               </div>
-              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Best Time to Visit</h3>
-              <p className=&quot;text-gray-300&quot;>April-October</p>
+              <h3 className="font-semibold mb-2 text-white">Best Time to Visit</h3>
+              <p className="text-gray-300">April-October</p>
             </div>
-            <div className=&quot;text-center&quot;>
-              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
-                <span className=&quot;text-2xl&quot;>💶</span>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">💶</span>
               </div>
-              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Currency</h3>
-              <p className=&quot;text-gray-300&quot;>Euro (€)</p>
+              <h3 className="font-semibold mb-2 text-white">Currency</h3>
+              <p className="text-gray-300">Euro (€)</p>
             </div>
-            <div className=&quot;text-center&quot;>
-              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
-                <span className=&quot;text-2xl&quot;>🗣️</span>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">🗣️</span>
               </div>
-              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Language</h3>
-              <p className=&quot;text-gray-300&quot;>
-                {slug === &apos;france&apos; ? &apos;French&apos; : slug === &apos;italy&apos; ? &apos;Italian&apos; : slug === &apos;spain&apos; ? &apos;Spanish&apos; : slug === &apos;greece&apos; ? &apos;Greek&apos; : slug === &apos;germany&apos; ? &apos;German&apos; : slug === &apos;japan&apos; ? &apos;Japanese&apos; : slug === &apos;china&apos; ? &apos;Mandarin&apos; : slug === &apos;thailand&apos; ? &apos;Thai&apos; : slug === &apos;vietnam&apos; ? &apos;Vietnamese&apos; : slug === &apos;korea&apos; ? &apos;Korean&apos; : slug === &apos;usa&apos; ? &apos;English&apos; : &apos;Portuguese&apos;}
+              <h3 className="font-semibold mb-2 text-white">Language</h3>
+              <p className="text-gray-300">
+                {slug === 'france' ? 'French' : slug === 'italy' ? 'Italian' : slug === 'spain' ? 'Spanish' : slug === 'greece' ? 'Greek' : slug === 'germany' ? 'German' : slug === 'japan' ? 'Japanese' : slug === 'china' ? 'Mandarin' : slug === 'thailand' ? 'Thai' : slug === 'vietnam' ? 'Vietnamese' : slug === 'korea' ? 'Korean' : slug === 'usa' ? 'English' : 'Portuguese'}
               </p>
             </div>
-            <div className=&quot;text-center&quot;>
-              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
-                <span className=&quot;text-2xl&quot;>⏰</span>
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-2xl">⏰</span>
               </div>
-              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Time Zone</h3>
-              <p className=&quot;text-gray-300&quot;>CET (UTC+1)</p>
+              <h3 className="font-semibold mb-2 text-white">Time Zone</h3>
+              <p className="text-gray-300">CET (UTC+1)</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Top Destinations */}
-      <section id=&quot;destinations&quot; className=&quot;py-16 bg-gray-900&quot;>
-        <div className=&quot;container mx-auto px-4&quot;>
-          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
+      <section id="destinations" className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
             Must-Visit Destinations
           </h2>
-          <div className=&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8&quot;>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {country.destinations.map((destination) => (
-              <div key={destination.name} className=&quot;bg-white rounded-lg shadow-xl overflow-hidden&quot;>
-                <div className=&quot;relative h-64&quot;>
+              <div key={destination.name} className="bg-white rounded-lg shadow-xl overflow-hidden">
+                <div className="relative h-64">
                   <Image
                     src={destination.image}
                     alt={destination.name}
                     fill
-                    className=&quot;object-cover&quot;
+                    className="object-cover"
                   />
                 </div>
-                <div className=&quot;p-6&quot;>
-                  <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>{destination.name}</h3>
-                  <p className=&quot;text-gray-600 mb-4&quot;>{destination.description}</p>
-                  <div className=&quot;space-y-2 text-sm bg-gray-800 p-4 rounded-lg text-white&quot;>
-                    <div className=&quot;flex items-center&quot;>
-                      <span className=&quot;text-lg mr-2&quot;>✨</span>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{destination.name}</h3>
+                  <p className="text-gray-600 mb-4">{destination.description}</p>
+                  <div className="space-y-2 text-sm bg-gray-800 p-4 rounded-lg text-white">
+                    <div className="flex items-center">
+                      <span className="text-lg mr-2">✨</span>
                       <div>
                         <strong>Highlights:</strong>
-                        <p className=&quot;text-gray-300&quot;>{destination.highlights.join(&quot;, &quot;)}</p>
+                        <p className="text-gray-300">{destination.highlights.join(", ")}</p>
                       </div>
                     </div>
-                    <div className=&quot;flex items-center&quot;>
-                      <span className=&quot;text-lg mr-2&quot;>🗓️</span>
+                    <div className="flex items-center">
+                      <span className="text-lg mr-2">🗓️</span>
                       <div>
                         <strong>Best Time:</strong>
-                        <p className=&quot;text-gray-300&quot;>{destination.bestTime}</p>
+                        <p className="text-gray-300">{destination.bestTime}</p>
                       </div>
                     </div>
-                    <div className=&quot;flex items-center&quot;>
-                      <span className=&quot;text-lg mr-2&quot;>⌛</span>
+                    <div className="flex items-center">
+                      <span className="text-lg mr-2">⌛</span>
                       <div>
                         <strong>Suggested Duration:</strong>
-                        <p className=&quot;text-gray-300&quot;>{destination.duration}</p>
+                        <p className="text-gray-300">{destination.duration}</p>
                       </div>
                     </div>
                   </div>
@@ -1376,19 +1376,19 @@ export default async function CountryGuide({ params }: PageProps) {
       </section>
 
       {/* Experiences */}
-      <section id=&quot;experiences&quot; className=&quot;py-16 bg-gray-800&quot;>
-        <div className=&quot;container mx-auto px-4&quot;>
-          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
+      <section id="experiences" className="py-16 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
             Unique {slug.charAt(0).toUpperCase() + slug.slice(1)} Experiences
           </h2>
-          <div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-8&quot;>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {country.experiences.map((experience) => (
-              <div key={experience.name} className=&quot;bg-white p-8 rounded-lg shadow-xl&quot;>
-                <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>{experience.name}</h3>
-                <p className=&quot;text-gray-600 mb-4&quot;>{experience.description}</p>
-                <div className=&quot;space-y-2&quot;>
-                  <h4 className=&quot;font-medium text-gray-900&quot;>Recommended Activities:</h4>
-                  <ul className=&quot;list-disc list-inside text-gray-600&quot;>
+              <div key={experience.name} className="bg-white p-8 rounded-lg shadow-xl">
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">{experience.name}</h3>
+                <p className="text-gray-600 mb-4">{experience.description}</p>
+                <div className="space-y-2">
+                  <h4 className="font-medium text-gray-900">Recommended Activities:</h4>
+                  <ul className="list-disc list-inside text-gray-600">
                     {experience.activities.map((activity) => (
                       <li key={activity}>{activity}</li>
                     ))}
@@ -1401,86 +1401,86 @@ export default async function CountryGuide({ params }: PageProps) {
       </section>
 
       {/* Travel Tips */}
-      <section className=&quot;py-16 bg-gray-900&quot;>
-        <div className=&quot;container mx-auto px-4&quot;>
-          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
+      <section className="py-16 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
             Essential Travel Tips
           </h2>
-          <div className=&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8&quot;>
-            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
-              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Transportation</h3>
-              <ul className=&quot;space-y-2 text-gray-600&quot;>
-                {slug === &apos;france&apos; ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="bg-white p-6 rounded-lg shadow-xl">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Transportation</h3>
+              <ul className="space-y-2 text-gray-600">
+                {slug === 'france' ? (
                   <>
                     <li>• TGV trains connect major cities</li>
                     <li>• Metro systems in larger cities</li>
                     <li>• Car rental for countryside exploration</li>
                     <li>• Navigo pass for Paris transport</li>
                   </>
-                ) : slug === &apos;italy&apos; ? (
+                ) : slug === 'italy' ? (
                   <>
                     <li>• High-speed trains between cities</li>
                     <li>• Extensive bus networks</li>
                     <li>• Car rental for rural areas</li>
                     <li>• Water taxis in Venice</li>
                   </>
-                ) : slug === &apos;spain&apos; ? (
+                ) : slug === 'spain' ? (
                   <>
                     <li>• AVE high-speed trains</li>
                     <li>• Metro in major cities</li>
                     <li>• Car rental for regions</li>
                     <li>• Local bus networks</li>
                   </>
-                ) : slug === &apos;greece&apos; ? (
+                ) : slug === 'greece' ? (
                   <>
                     <li>• Ferry services between islands</li>
                     <li>• Metro in Athens</li>
                     <li>• KTEL intercity buses</li>
                     <li>• Domestic flights to islands</li>
                   </>
-                ) : slug === &apos;germany&apos; ? (
+                ) : slug === 'germany' ? (
                   <>
                     <li>• Deutsche Bahn rail network</li>
                     <li>• Efficient public transport</li>
                     <li>• Autobahn for driving</li>
                     <li>• Regional transport passes</li>
                   </>
-                ) : slug === &apos;japan&apos; ? (
+                ) : slug === 'japan' ? (
                   <>
                     <li>• JR Rail Pass for intercity travel</li>
                     <li>• Efficient metro systems</li>
                     <li>• Shinkansen bullet trains</li>
                     <li>• IC cards for local transport</li>
                   </>
-                ) : slug === &apos;china&apos; ? (
+                ) : slug === 'china' ? (
                   <>
                     <li>• High-speed rail network</li>
                     <li>• Metro systems in major cities</li>
                     <li>• DiDi ride-hailing app</li>
                     <li>• Domestic flights for long distances</li>
                   </>
-                ) : slug === &apos;thailand&apos; ? (
+                ) : slug === 'thailand' ? (
                   <>
                     <li>• BTS Skytrain in Bangkok</li>
                     <li>• Tuk-tuks for short trips</li>
                     <li>• Long-distance buses</li>
                     <li>• Island ferries</li>
                   </>
-                ) : slug === &apos;vietnam&apos; ? (
+                ) : slug === 'vietnam' ? (
                   <>
                     <li>• Motorbike taxis (Grab)</li>
                     <li>• Overnight trains</li>
                     <li>• Local buses</li>
                     <li>• Domestic flights</li>
                   </>
-                ) : slug === &apos;korea&apos; ? (
+                ) : slug === 'korea' ? (
                   <>
                     <li>• Efficient metro system</li>
                     <li>• KTX high-speed trains</li>
                     <li>• Local buses</li>
                     <li>• T-money card for transport</li>
                   </>
-                ) : slug === &apos;usa&apos; ? (
+                ) : slug === 'usa' ? (
                   <>
                     <li>• Domestic flights for long distances</li>
                     <li>• Metro in major cities</li>
@@ -1497,89 +1497,89 @@ export default async function CountryGuide({ params }: PageProps) {
                 )}
               </ul>
             </div>
-            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
-              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Cultural Tips</h3>
-              <ul className=&quot;space-y-2 text-gray-600&quot;>
-                {slug === &apos;france&apos; ? (
+            <div className="bg-white p-6 rounded-lg shadow-xl">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Cultural Tips</h3>
+              <ul className="space-y-2 text-gray-600">
+                {slug === 'france' ? (
                   <>
-                    <li>• Greet with &quot;Bonjour&quot; when entering shops</li>
+                    <li>• Greet with "Bonjour" when entering shops</li>
                     <li>• Lunch: 12-2 PM, Dinner: 7:30-10 PM</li>
                     <li>• Many shops closed on Sundays</li>
                     <li>• Learn basic French phrases</li>
                   </>
-                ) : slug === &apos;italy&apos; ? (
+                ) : slug === 'italy' ? (
                   <>
-                    <li>• Greet with &quot;Ciao&quot; or &quot;Buongiorno&quot;</li>
+                    <li>• Greet with "Ciao" or "Buongiorno"</li>
                     <li>• Lunch: 1-3 PM, Dinner: 8-11 PM</li>
                     <li>• Afternoon siesta is common</li>
                     <li>• Learn basic Italian phrases</li>
                   </>
-                ) : slug === &apos;spain&apos; ? (
+                ) : slug === 'spain' ? (
                   <>
-                    <li>• Greet with &quot;Hola&quot; or &quot;Buenos días&quot;</li>
+                    <li>• Greet with "Hola" or "Buenos días"</li>
                     <li>• Late dining culture (9-11 PM)</li>
                     <li>• Siesta time respected</li>
                     <li>• Learn basic Spanish phrases</li>
                   </>
-                ) : slug === &apos;greece&apos; ? (
+                ) : slug === 'greece' ? (
                   <>
-                    <li>• Greet with &quot;Yassou&quot;</li>
+                    <li>• Greet with "Yassou"</li>
                     <li>• Lunch: 2-4 PM, Dinner: 9-11 PM</li>
                     <li>• Afternoon rest common in summer</li>
                     <li>• Learn basic Greek phrases</li>
                   </>
-                ) : slug === &apos;germany&apos; ? (
+                ) : slug === 'germany' ? (
                   <>
-                    <li>• Greet with &quot;Guten Tag&quot;</li>
+                    <li>• Greet with "Guten Tag"</li>
                     <li>• Punctuality is important</li>
                     <li>• Most shops closed on Sundays</li>
                     <li>• Learn basic German phrases</li>
                   </>
-                ) : slug === &apos;japan&apos; ? (
+                ) : slug === 'japan' ? (
                   <>
                     <li>• Bow when greeting</li>
                     <li>• Remove shoes before entering homes</li>
                     <li>• Use two hands when giving/receiving</li>
                     <li>• Learn basic Japanese phrases</li>
                   </>
-                ) : slug === &apos;china&apos; ? (
+                ) : slug === 'china' ? (
                   <>
                     <li>• Respect personal space</li>
                     <li>• Learn basic Mandarin phrases</li>
                     <li>• Use chopsticks properly</li>
                     <li>• Accept business cards with both hands</li>
                   </>
-                ) : slug === &apos;thailand&apos; ? (
+                ) : slug === 'thailand' ? (
                   <>
                     <li>• Greet with a wai (bow)</li>
                     <li>• Dress modestly at temples</li>
                     <li>• Remove shoes indoors</li>
-                    <li>• Don&apos;t touch people&apos;s heads</li>
+                    <li>• Don't touch people's heads</li>
                   </>
-                ) : slug === &apos;vietnam&apos; ? (
+                ) : slug === 'vietnam' ? (
                   <>
                     <li>• Use both hands when passing items</li>
                     <li>• Remove shoes before entering homes</li>
                     <li>• Respect elder people</li>
                     <li>• Learn basic Vietnamese phrases</li>
                   </>
-                ) : slug === &apos;korea&apos; ? (
+                ) : slug === 'korea' ? (
                   <>
                     <li>• Tipping is expected (15-20%)</li>
                     <li>• Casual dress is acceptable</li>
-                    <li>• Greet with &quot;Hi&quot; or &quot;Hello&quot;</li>
+                    <li>• Greet with "Hi" or "Hello"</li>
                     <li>• Respect personal space</li>
                   </>
-                ) : slug === &apos;usa&apos; ? (
+                ) : slug === 'usa' ? (
                   <>
-                    <li>• Greet with &quot;Olá&quot; (hello)</li>
+                    <li>• Greet with "Olá" (hello)</li>
                     <li>• Casual and beach attire common</li>
                     <li>• Personal space is closer</li>
                     <li>• Learn basic Portuguese phrases</li>
                   </>
                 ) : (
                   <>
-                    <li>• Greet with &quot;Olá&quot; (hello)</li>
+                    <li>• Greet with "Olá" (hello)</li>
                     <li>• Casual and beach attire common</li>
                     <li>• Personal space is closer</li>
                     <li>• Learn basic Portuguese phrases</li>
@@ -1587,80 +1587,80 @@ export default async function CountryGuide({ params }: PageProps) {
                 )}
               </ul>
             </div>
-            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
-              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Money Saving</h3>
-              <ul className=&quot;space-y-2 text-gray-600&quot;>
-                {slug === &apos;france&apos; ? (
+            <div className="bg-white p-6 rounded-lg shadow-xl">
+              <h3 className="text-xl font-semibold mb-3 text-gray-900">Money Saving</h3>
+              <ul className="space-y-2 text-gray-600">
+                {slug === 'france' ? (
                   <>
                     <li>• Museum Pass for multiple entries</li>
                     <li>• Free first Sunday at museums</li>
                     <li>• Prix fixe lunch menus</li>
                     <li>• Book trains in advance</li>
                   </>
-                ) : slug === &apos;italy&apos; ? (
+                ) : slug === 'italy' ? (
                   <>
                     <li>• Roma Pass for attractions</li>
                     <li>• Free church visits</li>
                     <li>• Lunch at local trattorias</li>
                     <li>• Regional train passes</li>
                   </>
-                ) : slug === &apos;spain&apos; ? (
+                ) : slug === 'spain' ? (
                   <>
                     <li>• City tourist cards</li>
                     <li>• Menu del día for lunch</li>
                     <li>• Free museum hours</li>
                     <li>• Book AVE trains early</li>
                   </>
-                ) : slug === &apos;greece&apos; ? (
+                ) : slug === 'greece' ? (
                   <>
                     <li>• Museum pass in Athens</li>
                     <li>• Visit during shoulder season</li>
                     <li>• Ferry passes for island hopping</li>
                     <li>• Eat at local tavernas</li>
                   </>
-                ) : slug === &apos;germany&apos; ? (
+                ) : slug === 'germany' ? (
                   <>
                     <li>• City tourist cards</li>
                     <li>• Deutsche Bahn savings fares</li>
                     <li>• Free walking tours</li>
                     <li>• Student discounts</li>
                   </>
-                ) : slug === &apos;japan&apos; ? (
+                ) : slug === 'japan' ? (
                   <>
                     <li>• JR Pass for long-distance travel</li>
                     <li>• Eat at local ramen shops</li>
                     <li>• Stay in capsule hotels</li>
                     <li>• Visit temples for free</li>
                   </>
-                ) : slug === &apos;china&apos; ? (
+                ) : slug === 'china' ? (
                   <>
                     <li>• Use WeChat Pay/Alipay</li>
                     <li>• Book trains in advance</li>
                     <li>• Eat at local restaurants</li>
                     <li>• Use metro for city travel</li>
                   </>
-                ) : slug === &apos;thailand&apos; ? (
+                ) : slug === 'thailand' ? (
                   <>
                     <li>• Stay in guesthouses</li>
                     <li>• Eat at street food stalls</li>
                     <li>• Use local transport</li>
                     <li>• Visit temples for free</li>
                   </>
-                ) : slug === &apos;vietnam&apos; ? (
+                ) : slug === 'vietnam' ? (
                   <>
                     <li>• Stay in hostels/guesthouses</li>
                     <li>• Eat street food</li>
                     <li>• Use sleeper trains</li>
                     <li>• Bargain at markets</li>
                   </>
-                ) : slug === &apos;korea&apos; ? (
+                ) : slug === 'korea' ? (
                   <>
                     <li>• City tourist passes</li>
                     <li>• National Park annual pass</li>
                     <li>• Happy hour specials</li>
                     <li>• Book flights in advance</li>
                   </>
-                ) : slug === &apos;usa&apos; ? (
+                ) : slug === 'usa' ? (
                   <>
                     <li>• Travel in off-season</li>
                     <li>• Eat at local restaurants</li>
@@ -1682,24 +1682,24 @@ export default async function CountryGuide({ params }: PageProps) {
       </section>
 
       {/* Newsletter */}
-      <section className=&quot;py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white&quot;>
-        <div className=&quot;container mx-auto px-4&quot;>
-          <div className=&quot;max-w-2xl mx-auto text-center&quot;>
-            <h2 className=&quot;text-4xl font-bold mb-4 text-white drop-shadow-lg&quot;>
+      <section className="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
               Get {slug.charAt(0).toUpperCase() + slug.slice(1)} Travel Updates
             </h2>
-            <p className=&quot;text-xl mb-8 text-gray-300&quot;>
+            <p className="text-xl mb-8 text-gray-300">
               Subscribe for insider tips, seasonal guides, and special offers.
             </p>
-            <form className=&quot;flex flex-col md:flex-row gap-4&quot;>
+            <form className="flex flex-col md:flex-row gap-4">
               <input
-                type=&quot;email&quot;
-                placeholder=&quot;Enter your email&quot;
-                className=&quot;flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600&quot;
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
               />
               <button
-                type=&quot;submit&quot;
-                className=&quot;bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors&quot;
+                type="submit"
+                className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
               >
                 Subscribe
               </button>
