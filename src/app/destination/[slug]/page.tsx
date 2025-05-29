@@ -1,97 +1,91 @@
-import { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Metadata } from &apos;next&apos;;
+import Image from &apos;next/image&apos;;
+import Link from &apos;next/link&apos;;
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: 'Barcelona Travel Guide: Essential Tips & Best Places to Visit | Global Food Prints',
-    description: 'Discover the best of Barcelona with our comprehensive travel guide. Explore Gaudí\'s masterpieces, vibrant culture, Spanish cuisine, and Mediterranean charm. Plan your perfect Barcelona holiday.',
-    keywords: 'Barcelona travel guide, Sagrada Familia, Park Güell, La Rambla, Spanish cuisine, Barcelona attractions, Barcelona itinerary, Barcelona travel tips',
+    title: &apos;Barcelona Travel Guide: Essential Tips & Best Places to Visit | Global Food Prints&apos;,
+    description: &apos;Discover the best of Barcelona with our comprehensive travel guide. Explore Gaudí\'s masterpieces, vibrant culture, Spanish cuisine, and Mediterranean charm. Plan your perfect Barcelona holiday.&apos;,
+    keywords: &apos;Barcelona travel guide, Sagrada Familia, Park Güell, La Rambla, Spanish cuisine, Barcelona attractions, Barcelona itinerary, Barcelona travel tips&apos;,
     openGraph: {
-      title: 'Barcelona Travel Guide: Essential Tips & Best Places to Visit',
-      description: 'Plan your perfect Barcelona holiday with our comprehensive guide to Barcelona\'s best attractions, local cuisine, and hidden gems.',
-      images: ['/images/destinations/barcelona-og.jpg'],
+      title: &apos;Barcelona Travel Guide: Essential Tips & Best Places to Visit&apos;,
+      description: &apos;Plan your perfect Barcelona holiday with our comprehensive guide to Barcelona\'s best attractions, local cuisine, and hidden gems.&apos;,
+      images: [&apos;/images/destinations/barcelona-og.jpg&apos;],
     },
   };
 }
 
 const attractions = [
   {
-    name: "Sagrada Familia",
-    description: "Antoni Gaudí's unfinished masterpiece, this stunning basilica combines Gothic and Art Nouveau forms in a unique, organic style. Still under construction after more than 140 years.",
-    image: "/images/attractions/barcelona/sagrada-familia.jpg",
-    ticketInfo: "€26-38 for basic adult admission, book online to avoid queues",
-    bestTime: "Early morning or late afternoon for best light",
-    duration: "2-3 hours"
+    name: &quot;Sagrada Familia&quot;,
+    description: &quot;Antoni Gaudí&apos;s unfinished masterpiece, this stunning basilica combines Gothic and Art Nouveau forms in a unique, organic style. Still under construction after more than 140 years.&quot;,
+    image: &quot;/images/attractions/barcelona/sagrada-familia.jpg&quot;,
+    ticketInfo: &quot;€26-38 for basic adult admission, book online to avoid queues&quot;,
+    bestTime: &quot;Early morning or late afternoon for best light&quot;,
+    duration: &quot;2-3 hours&quot;
   },
   {
-    name: "Park Güell",
-    description: "A whimsical public park featuring Gaudí's iconic architectural elements, colorful mosaics, and stunning views of Barcelona and the Mediterranean.",
-    image: "/images/attractions/barcelona/park-guell.jpg",
-    ticketInfo: "€10 for Monumental Zone, free for general park access",
-    bestTime: "Early morning to avoid crowds and heat",
-    duration: "1.5-2 hours"
+    name: &quot;Park Güell&quot;,
+    description: &quot;A whimsical public park featuring Gaudí&apos;s iconic architectural elements, colorful mosaics, and stunning views of Barcelona and the Mediterranean.&quot;,
+    image: &quot;/images/attractions/barcelona/park-guell.jpg&quot;,
+    ticketInfo: &quot;€10 for Monumental Zone, free for general park access&quot;,
+    bestTime: &quot;Early morning to avoid crowds and heat&quot;,
+    duration: &quot;1.5-2 hours&quot;
   },
   {
-    name: "La Rambla & Gothic Quarter",
-    description: "Barcelona's most famous street and historic heart, featuring street performers, cafes, and historic architecture in the surrounding Gothic Quarter.",
-    image: "/images/attractions/barcelona/la-rambla.jpg",
-    ticketInfo: "Free to explore, guided tours available",
-    bestTime: "Evening for best atmosphere",
-    duration: "2-3 hours"
+    name: &quot;La Rambla & Gothic Quarter&quot;,
+    description: &quot;Barcelona&apos;s most famous street and historic heart, featuring street performers, cafes, and historic architecture in the surrounding Gothic Quarter.&quot;,
+    image: &quot;/images/attractions/barcelona/la-rambla.jpg&quot;,
+    ticketInfo: &quot;Free to explore, guided tours available&quot;,
+    bestTime: &quot;Evening for best atmosphere&quot;,
+    duration: &quot;2-3 hours&quot;
   }
 ];
 
 const neighborhoods = [
   {
-    name: "El Born",
-    description: "Trendy neighborhood with medieval streets, fashionable boutiques, tapas bars, and the iconic Santa Maria del Mar church.",
-    highlights: ["Santa Maria del Mar", "Picasso Museum", "Tapas bars"]
+    name: &quot;El Born&quot;,
+    description: &quot;Trendy neighborhood with medieval streets, fashionable boutiques, tapas bars, and the iconic Santa Maria del Mar church.&quot;,
+    highlights: [&quot;Santa Maria del Mar&quot;, &quot;Picasso Museum&quot;, &quot;Tapas bars&quot;]
   },
   {
-    name: "Gràcia",
-    description: "Bohemian district known for its village-like feel, independent shops, organic cafes, and vibrant plaza life.",
-    highlights: ["Plaza del Sol", "Local festivals", "Artisan shops"]
+    name: &quot;Gràcia&quot;,
+    description: &quot;Bohemian district known for its village-like feel, independent shops, organic cafes, and vibrant plaza life.&quot;,
+    highlights: [&quot;Plaza del Sol&quot;, &quot;Local festivals&quot;, &quot;Artisan shops&quot;]
   }
 ];
 
-export default function BarcelonaTravelGuide() {
+export default async function DestinationGuide() {
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className=&quot;min-h-screen bg-gray-900&quot;>
       {/* Hero Section */}
-      <section className="relative h-[600px]">
+      <section className=&quot;relative h-[600px]&quot;>
         <Image
-          src="/images/destinations/barcelona-hero.jpg"
-          alt="Barcelona cityscape with Sagrada Familia"
+          src=&quot;/images/destinations/barcelona-hero.jpg&quot;
+          alt=&quot;Barcelona cityscape with Sagrada Familia&quot;
           fill
-          className="object-cover"
+          className=&quot;object-cover&quot;
           priority
         />
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="relative container mx-auto px-4 h-full flex items-center">
-          <div className="max-w-3xl text-white">
-            <h1 className="text-6xl font-bold mb-4 text-white drop-shadow-lg">
+        <div className=&quot;absolute inset-0 bg-black opacity-50&quot;></div>
+        <div className=&quot;relative container mx-auto px-4 h-full flex items-center&quot;>
+          <div className=&quot;max-w-3xl text-white&quot;>
+            <h1 className=&quot;text-6xl font-bold mb-4 text-white drop-shadow-lg&quot;>
               Barcelona Travel Guide
             </h1>
-            <p className="text-xl mb-6 text-white drop-shadow-md">
-              Discover the Catalan capital's stunning architecture, vibrant culture, delicious cuisine, and Mediterranean lifestyle.
+            <p className=&quot;text-xl mb-6 text-white drop-shadow-md&quot;>
+              Discover the Catalan capital&apos;s stunning architecture, vibrant culture, delicious cuisine, and Mediterranean lifestyle.
             </p>
-            <div className="flex gap-4">
+            <div className=&quot;flex gap-4&quot;>
               <Link 
-                href="#attractions"
-                className="bg-white text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+                href=&quot;#attractions&quot;
+                className=&quot;bg-white text-gray-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors&quot;
               >
                 Top Attractions
               </Link>
               <Link 
-                href="#planning"
-                className="border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors"
+                href=&quot;#planning&quot;
+                className=&quot;border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-gray-900 transition-colors&quot;
               >
                 Plan Your Trip
               </Link>
@@ -101,65 +95,65 @@ export default function BarcelonaTravelGuide() {
       </section>
 
       {/* Quick Facts */}
-      <section className="py-12 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🌍</span>
+      <section className=&quot;py-12 bg-gray-800&quot;>
+        <div className=&quot;container mx-auto px-4&quot;>
+          <div className=&quot;grid grid-cols-1 md:grid-cols-4 gap-8&quot;>
+            <div className=&quot;text-center&quot;>
+              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
+                <span className=&quot;text-2xl&quot;>🌍</span>
               </div>
-              <h3 className="font-semibold mb-2 text-white">Best Time to Visit</h3>
-              <p className="text-gray-300">May-June or September-October</p>
+              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Best Time to Visit</h3>
+              <p className=&quot;text-gray-300&quot;>May-June or September-October</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">💶</span>
+            <div className=&quot;text-center&quot;>
+              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
+                <span className=&quot;text-2xl&quot;>💶</span>
               </div>
-              <h3 className="font-semibold mb-2 text-white">Currency</h3>
-              <p className="text-gray-300">Euro (€)</p>
+              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Currency</h3>
+              <p className=&quot;text-gray-300&quot;>Euro (€)</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">🗣️</span>
+            <div className=&quot;text-center&quot;>
+              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
+                <span className=&quot;text-2xl&quot;>🗣️</span>
               </div>
-              <h3 className="font-semibold mb-2 text-white">Languages</h3>
-              <p className="text-gray-300">Catalan & Spanish</p>
+              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Languages</h3>
+              <p className=&quot;text-gray-300&quot;>Catalan & Spanish</p>
             </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl">⏰</span>
+            <div className=&quot;text-center&quot;>
+              <div className=&quot;w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4&quot;>
+                <span className=&quot;text-2xl&quot;>⏰</span>
               </div>
-              <h3 className="font-semibold mb-2 text-white">Time Zone</h3>
-              <p className="text-gray-300">CET (UTC+1)</p>
+              <h3 className=&quot;font-semibold mb-2 text-white&quot;>Time Zone</h3>
+              <p className=&quot;text-gray-300&quot;>CET (UTC+1)</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Top Attractions */}
-      <section id="attractions" className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
+      <section id=&quot;attractions&quot; className=&quot;py-16 bg-gray-900&quot;>
+        <div className=&quot;container mx-auto px-4&quot;>
+          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
             Must-Visit Attractions
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className=&quot;grid grid-cols-1 md:grid-cols-3 gap-8&quot;>
             {attractions.map((attraction) => (
-              <div key={attraction.name} className="bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                <div className="relative h-64">
+              <div key={attraction.name} className=&quot;bg-white rounded-lg shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-300&quot;>
+                <div className=&quot;relative h-64&quot;>
                   <Image
                     src={attraction.image}
                     alt={attraction.name}
                     fill
-                    className="object-cover"
+                    className=&quot;object-cover&quot;
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-3 text-gray-900">{attraction.name}</h3>
-                  <p className="text-gray-600 mb-4">{attraction.description}</p>
-                  <div className="space-y-2 text-sm text-white bg-gray-800 p-4 rounded-lg">
-                    <p className="flex items-center"><span className="text-lg mr-2">🎫</span> <strong className="text-white">Tickets:</strong> {attraction.ticketInfo}</p>
-                    <p className="flex items-center"><span className="text-lg mr-2">⏰</span> <strong className="text-white">Best Time:</strong> {attraction.bestTime}</p>
-                    <p className="flex items-center"><span className="text-lg mr-2">⌛</span> <strong className="text-white">Duration:</strong> {attraction.duration}</p>
+                <div className=&quot;p-6&quot;>
+                  <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>{attraction.name}</h3>
+                  <p className=&quot;text-gray-600 mb-4&quot;>{attraction.description}</p>
+                  <div className=&quot;space-y-2 text-sm text-white bg-gray-800 p-4 rounded-lg&quot;>
+                    <p className=&quot;flex items-center&quot;><span className=&quot;text-lg mr-2&quot;>🎫</span> <strong className=&quot;text-white&quot;>Tickets:</strong> {attraction.ticketInfo}</p>
+                    <p className=&quot;flex items-center&quot;><span className=&quot;text-lg mr-2&quot;>⏰</span> <strong className=&quot;text-white&quot;>Best Time:</strong> {attraction.bestTime}</p>
+                    <p className=&quot;flex items-center&quot;><span className=&quot;text-lg mr-2&quot;>⌛</span> <strong className=&quot;text-white&quot;>Duration:</strong> {attraction.duration}</p>
                   </div>
                 </div>
               </div>
@@ -169,19 +163,19 @@ export default function BarcelonaTravelGuide() {
       </section>
 
       {/* Neighborhoods */}
-      <section className="py-16 bg-gray-800">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
-            Explore Barcelona's Neighborhoods
+      <section className=&quot;py-16 bg-gray-800&quot;>
+        <div className=&quot;container mx-auto px-4&quot;>
+          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
+            Explore Barcelona&apos;s Neighborhoods
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className=&quot;grid grid-cols-1 md:grid-cols-2 gap-8&quot;>
             {neighborhoods.map((neighborhood) => (
-              <div key={neighborhood.name} className="bg-white p-8 rounded-lg shadow-xl">
-                <h3 className="text-xl font-semibold mb-3 text-gray-900">{neighborhood.name}</h3>
-                <p className="text-gray-600 mb-4">{neighborhood.description}</p>
-                <div className="space-y-2">
-                  <h4 className="font-medium text-gray-900">Highlights:</h4>
-                  <ul className="list-disc list-inside text-gray-600">
+              <div key={neighborhood.name} className=&quot;bg-white p-8 rounded-lg shadow-xl&quot;>
+                <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>{neighborhood.name}</h3>
+                <p className=&quot;text-gray-600 mb-4&quot;>{neighborhood.description}</p>
+                <div className=&quot;space-y-2&quot;>
+                  <h4 className=&quot;font-medium text-gray-900&quot;>Highlights:</h4>
+                  <ul className=&quot;list-disc list-inside text-gray-600&quot;>
                     {neighborhood.highlights.map((highlight) => (
                       <li key={highlight}>{highlight}</li>
                     ))}
@@ -194,33 +188,33 @@ export default function BarcelonaTravelGuide() {
       </section>
 
       {/* Travel Tips */}
-      <section id="planning" className="py-16 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12 text-white drop-shadow-lg">
+      <section id=&quot;planning&quot; className=&quot;py-16 bg-gray-900&quot;>
+        <div className=&quot;container mx-auto px-4&quot;>
+          <h2 className=&quot;text-4xl font-bold text-center mb-12 text-white drop-shadow-lg&quot;>
             Essential Travel Tips
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-xl">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Getting Around</h3>
-              <ul className="space-y-2 text-gray-600">
+          <div className=&quot;grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8&quot;>
+            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
+              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Getting Around</h3>
+              <ul className=&quot;space-y-2 text-gray-600&quot;>
                 <li>• Metro runs from 5:00 AM to midnight</li>
                 <li>• T-Casual card for multiple journeys</li>
                 <li>• Many attractions walkable in city center</li>
                 <li>• Bike rentals popular for exploring</li>
               </ul>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-xl">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Where to Stay</h3>
-              <ul className="space-y-2 text-gray-600">
+            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
+              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Where to Stay</h3>
+              <ul className=&quot;space-y-2 text-gray-600&quot;>
                 <li>• Gothic Quarter: Historic center</li>
                 <li>• El Born: Trendy & central</li>
                 <li>• Eixample: Modernist architecture</li>
                 <li>• Gràcia: Local vibe & cafes</li>
               </ul>
             </div>
-            <div className="bg-white p-6 rounded-lg shadow-xl">
-              <h3 className="text-xl font-semibold mb-3 text-gray-900">Local Customs</h3>
-              <ul className="space-y-2 text-gray-600">
+            <div className=&quot;bg-white p-6 rounded-lg shadow-xl&quot;>
+              <h3 className=&quot;text-xl font-semibold mb-3 text-gray-900&quot;>Local Customs</h3>
+              <ul className=&quot;space-y-2 text-gray-600&quot;>
                 <li>• Late lunch (2-4 PM) & dinner (9-11 PM)</li>
                 <li>• Siesta time (some shops close 2-5 PM)</li>
                 <li>• Tipping: 5-10% if service not included</li>
@@ -232,24 +226,24 @@ export default function BarcelonaTravelGuide() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-4 text-white drop-shadow-lg">
+      <section className=&quot;py-16 bg-gradient-to-r from-gray-800 to-gray-900 text-white&quot;>
+        <div className=&quot;container mx-auto px-4&quot;>
+          <div className=&quot;max-w-2xl mx-auto text-center&quot;>
+            <h2 className=&quot;text-4xl font-bold mb-4 text-white drop-shadow-lg&quot;>
               Get Barcelona Travel Updates
             </h2>
-            <p className="text-xl mb-8 text-gray-300">
+            <p className=&quot;text-xl mb-8 text-gray-300&quot;>
               Subscribe for insider tips, seasonal guides, and special offers.
             </p>
-            <form className="flex flex-col md:flex-row gap-4">
+            <form className=&quot;flex flex-col md:flex-row gap-4&quot;>
               <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                type=&quot;email&quot;
+                placeholder=&quot;Enter your email&quot;
+                className=&quot;flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600&quot;
               />
               <button
-                type="submit"
-                className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+                type=&quot;submit&quot;
+                className=&quot;bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors&quot;
               >
                 Subscribe
               </button>

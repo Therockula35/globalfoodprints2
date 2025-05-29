@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import Image from 'next/image';
 
 export default function BlogPost() {
   const router = useRouter();
@@ -21,7 +22,13 @@ export default function BlogPost() {
             </p>
           </div>
           <div className="md:w-1/2">
-            <img src="/path/to/image.jpg" alt="{slug}" className="w-full h-auto rounded-lg shadow-md" />
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              width={800}
+              height={400}
+              className="w-full h-auto rounded-lg shadow-lg"
+            />
           </div>
         </div>
         <div className="flex flex-col md:flex-row">
